@@ -1,6 +1,8 @@
 import { useState } from "react";
 import "../Style/user.css";
 import vector from '../assets/img/vector.png';
+import { Link } from "react-router-dom";
+
 
 const TABS = [
     "All",
@@ -34,24 +36,24 @@ const usersData = [
     },
     {
         id: 3,
-        name: "Rohit",
-        mobile: "9123456987",
+        name: "Priya",
+        mobile: "9123456999",
         operator: "Airtel",
         lastRecharge: "01-01-2026",
-        plan: "₹409",
+        plan: "₹799",
         status: "Expired",
         validity: "01-03-2026",
         icon: vector
     },
     {
         id: 4,
-        name: "Rohit",
-        mobile: "9123456987",
-        operator: "Airtel",
-        lastRecharge: null,
-        plan: null,
+        name: "Roshan",
+        mobile: "9123456900",
+        operator: "None",
+        lastRecharge: "None",
+        plan: "None",
         status: "No Recharge",
-        validity: null,
+        validity: "None",
         icon: vector
     },
 ];
@@ -69,7 +71,7 @@ const Users = () => {
     };
 
 
-    // ✅ FILTER LOGIC (FIXED)
+    //  FILTER LOGIC (FIXED)
     const filteredUsers = usersData.filter((u) => {
         if (
             search &&
@@ -170,6 +172,7 @@ const Users = () => {
                     <div className="row g-3 align-items-end mb-3">
                         <div className="col-lg-3">
                             <label className="form-label poppins-regular">Username</label>
+
                             <input
                                 className="form-control poppins-regular"
                                 placeholder="Search"
@@ -194,7 +197,7 @@ const Users = () => {
                             <label className="form-label poppins-regular">From Date</label>
                             <input
                                 type="date"
-                                className="form-control"
+                                className="form-control poppins-regular text-muted"
                                 value={fromDate}
                                 onChange={(e) => setFromDate(e.target.value)}
                             />
@@ -204,7 +207,7 @@ const Users = () => {
                             <label className="form-label poppins-regular">To Date</label>
                             <input
                                 type="date"
-                                className="form-control"
+                                className="form-control poppins-regular text-muted"
                                 value={toDate}
                                 onChange={(e) => setToDate(e.target.value)}
                             />
@@ -233,7 +236,7 @@ const Users = () => {
                                         <td>{i + 1}</td>
 
                                         <td>
-                                            <h6 className="mb-0 poppins-semibold">{u.name}</h6>
+                                            <h6 className="mb-0 poppins-medium">{u.name}</h6>
                                             <span className="text-muted">{u.mobile}</span>
                                         </td>
 
@@ -244,10 +247,10 @@ const Users = () => {
                                         <td>
                                             <span
                                                 className={`fw-semibold ${u.status === "Active"
-                                                        ? "text-success"
-                                                        : u.status === "Expired"
-                                                            ? "text-danger"
-                                                            : "text-muted"
+                                                    ? "text-success"
+                                                    : u.status === "Expired"
+                                                        ? "text-danger"
+                                                        : "text-muted"
                                                     }`}
                                             >
                                                 {u.status}
@@ -256,13 +259,15 @@ const Users = () => {
 
                                         <td>{u.validity || "None"}</td>
                                         <td className="text-center">
-                                            <img
-                                                src={u.icon}
-                                                alt="action"
-                                                width={20}
-                                                height={15}
-                                                style={{ cursor: "pointer" }}
-                                            />
+                                            <Link to={`/user/${u.id}`}>
+                                                <img
+                                                    src={u.icon}
+                                                    alt="action"
+                                                    width={20}
+                                                    height={15}
+                                                    style={{ cursor: "pointer" }}
+                                                />
+                                            </Link>
                                         </td>
 
                                     </tr>

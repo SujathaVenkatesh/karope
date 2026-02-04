@@ -7,51 +7,52 @@ import {
   FaHeadset,
   FaCog,
   FaSignOutAlt,
+  FaMobileAlt,
 } from "react-icons/fa";
-import '../Style/sidebar.css'
-
-import {Link} from 'react-router-dom'
+import { Link, useLocation } from "react-router-dom";
+import "../Style/sidebar.css";
+import logo from '../assets/img/logo.jpeg'
 
 const Sidebar = () => {
+  const location = useLocation();
+
+  const menuItem = (to, icon, label) => (
+    <Link to={to} className="sidebar-link">
+      <li
+        className={`sidebar-item ${
+          location.pathname === to ? "active" : ""
+        }`}
+      >
+        {icon}
+        <span>{label}</span>
+      </li>
+    </Link>
+  );
+
   return (
-    <aside
-      className="sidebar text-white position-fixed top-0 start-0 vh-100 d-none d-lg-flex flex-column" style={{backgroundColor:"#399c41"}}>
-      {/* Logo */}
-      <div className="text-center py-4 fs-4 fw-bold">
-        LOGO
+    <aside className="sidebar">
+      {/* LOGO */}
+      <div className="sidebar-logo">
+        <img src={logo} alt="logo" className="" />
       </div>
 
-      {/* Menu */}
-      <ul className="nav flex-column px-3 gap-3 fs-6">
-      
-      <Link to="/" className="text-decoration-none text-white"> <li className="nav-item d-flex align-items-center gap-2">
-          <FaHome /> Dashboard
-        </li> </Link> 
+      {/* MENU */}
+      <ul className="sidebar-menu">
+        {menuItem("/dash", <FaHome />, "DASHBOARD")}
+        {menuItem("/user", <FaUsers />, "USERS")}
+        {menuItem("/transaction", <FaExchangeAlt />, "TRANSACTIONS")}
+        {menuItem("/menu", <FaThLarge />, "MENU")}
+        {menuItem("/operatorsetting", <FaUsers />, "OPERATOR")}
+        {menuItem("/notification", <FaBell />, "NOTIFICATION")}
+        {menuItem("/frequent", <FaHeadset />, "SUPPORT")}
+       {menuItem("/settings", <FaCog />, "SETTINGS")}
 
-      <Link to="/user" className="text-decoration-none text-white"> <li className="nav-item d-flex align-items-center gap-2">
-          <FaUsers /> Users
-        </li> </Link>
 
-        <Link to="/transaction" className="text-decoration-none text-white"> <li className="nav-item d-flex align-items-center gap-2">
-          <FaExchangeAlt /> Transactions
-        </li> </Link>
-        <li className="nav-item d-flex align-items-center gap-2">
-          <FaThLarge /> Menu
-        </li>
-        <li className="nav-item d-flex align-items-center gap-2">
-          <FaBell /> Notification
-        </li>
-        <li className="nav-item d-flex align-items-center gap-2">
-          <FaHeadset /> Support
-        </li>
-        <li className="nav-item d-flex align-items-center gap-2">
-          <FaCog /> Settings
-        </li>
       </ul>
 
-      {/* Logout */}
-      <div className="mt-auto p-3">
-        <button className="btn btn-light w-100 text-color fw-bold d-flex align-items-center justify-content-center gap-2">
+      {/* LOGOUT */}
+      <div className="sidebar-logout">
+        <button>
           <FaSignOutAlt />
           Logout
         </button>
