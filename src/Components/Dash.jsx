@@ -1,38 +1,15 @@
 import Dashcard from "../Components/Dashcard";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  ArcElement,       
-  Tooltip,
-  Legend,
-} from "chart.js";
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, ArcElement, Tooltip, Legend, } from "chart.js";
 
 import { Line, Doughnut } from "react-chartjs-2";
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  ArcElement,        
-  Tooltip,
-  Legend
-);
-
-
-
-
-
-
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, ArcElement, Tooltip, Legend);
 
 const Dash = () => {
 
-//  graph
+  //  graph
 
- const data = {
+  const data = {
     labels: [
       "Jan", "Feb", "Mar", "Apr", "May", "Jun",
       "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
@@ -60,12 +37,12 @@ const Dash = () => {
   };
 
   // circle
-   const data2 = {
+  const data2 = {
     labels: ["Success", "Failed"],
     datasets: [
       {
         data: [95, 5],
-        backgroundColor: ["#399c41", "#dc3545"],
+        backgroundColor: ["#399c41", "#BA1919"],
         borderWidth: 0,
         cutout: "70%",
       },
@@ -87,80 +64,78 @@ const Dash = () => {
     <>
       <h4 className="poppins-bold mb-4 text-color">Dashboard</h4>
 
-     {/* STATS SECTION */}
-<div className="bg-white shadow-sm rounded p-3 mb-4">
-  <div className="row g-3">
-    <Dashcard 
-      title="Total Users"
-      value="2,543"
-      percent="+12.5%"
-      type="users"
-    />
+      {/* STATS SECTION */}
+      <div className="bg-white shadow-sm rounded p-3 mb-4">
+        <div className="row g-3">
+          <Dashcard
+            title="Total Users"
+            value="2,543"
+            percent="+12.5%"
+            type="users"
+          />
 
-    <Dashcard
-      title="New Users"
-      value="1,923"
-      percent="+12.5%"
-      type="newUsers"
-    />
+          <Dashcard
+            title="New Users"
+            value="1,923"
+            percent="+12.5%"
+            type="newUsers"
+          />
 
-    <Dashcard
-      title="Today Recharge"
-      value="620"
-      percent="+12.5%"
-      type="recharge"
-    />
+          <Dashcard
+            title="Today Recharge"
+            value="620"
+            percent="+12.5%"
+            type="recharge"
+          />
 
-    <Dashcard
-      title="Prepaid / Postpaid"
-      value="743 / 1045"
-      type="prepaid"
-    />
-  </div>
-</div>
-
-
+          <Dashcard
+            title="Prepaid / Postpaid"
+            value="743 / 1045"
+            type="prepaid"
+          />
+        </div>
+      </div>
 
       {/* CHART SECTION */}
       <div className="row mb-4">
-  {/* LEFT: Recharge Line Chart */}
-  <div className="col-lg-8 mb-4">
-    <div className="card shadow-sm h-100">
-      <div className="card-body">
-        <h5 className="poppins-bold mb-3 text-color">Recharge</h5>
+        {/* LEFT: Recharge Line Chart */}
+        <div className="col-lg-8 mb-4">
+          <div className="card shadow-sm h-100">
+            <div className="card-body">
+              <h5 className="poppins-bold mb-3 text-color">Recharge</h5>
 
-        {/* Chart container */}
-        <div style={{ height: "260px" }} className="poppins-regular">
-          <Line  data={data} options={options} />
-        </div>
-      </div>
-    </div>
-  </div>
-
-  {/* RIGHT: Success & Failed Donut */}
-  <div className="col-lg-4 mb-4">
-    <div className="card shadow-sm h-100">
-      <div className="card-body">
-        <h5 className="poppins-bold text-color mb-3">
-          Success & Failed
-        </h5>
-
-        <div className="d-flex flex-column align-items-center justify-content-center">
-          <div style={{ width: "180px", height: "180px" }}>
-            <Doughnut data={data2} options={options2} />
-          </div>
-
-          <div className="mt-3 fw-semibold">
-            <span className="text-color poppins-regular">● Success 95%</span>
-            <span className="mx-3">|</span>
-            <span className="text-danger poppins-regular">● Failed 5%</span>
+              {/* Chart container */}
+              <div style={{ height: "260px" }} className="poppins-regular">
+                <Line data={data} options={options} />
+              </div>
+            </div>
           </div>
         </div>
 
+        {/* RIGHT: Success & Failed Donut */}
+        <div className="col-lg-4 mb-4">
+          <div className="card shadow-sm h-100">
+            <div className="card-body">
+              <h5 className="poppins-bold text-color mb-3">
+                Success & Failed
+              </h5>
+
+              <div className="d-flex flex-column align-items-center justify-content-center">
+                <div style={{ width: "180px", height: "180px" }}>
+                  <Doughnut data={data2} options={options2} />
+                </div>
+
+                <div className="mt-3 fw-semibold">
+                  <span className="poppins-regular" style={{ color: "#399C41" }}>● Success 95%</span>
+                  <span className="mx-3">|</span>
+                  <span className="poppins-regular" style={{ color: "#BA1919" }}>● Failed 5%</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-</div>
 
 
       {/* TRANSACTION TABLE */}
@@ -168,7 +143,7 @@ const Dash = () => {
         <div className="card-body">
           <div className="d-flex justify-content-between mb-3">
             <h5 className="poppins-bold text-color">Transactions History</h5>
-            <a href="#" className="text-color poppins-bold">
+            <a href="#" className="text-color poppins-medium text-decoration-none">
               View All
             </a>
           </div>
