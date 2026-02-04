@@ -67,20 +67,20 @@ return(
 <div className="row g-3 align-items-end">
 
 <div className="col-md-4">
-<label className="poppins-medium">Menu Name</label>
-<input className="form-control poppins-regular"
+<label className="poppins-regular">Menu Name</label>
+<input className="form-control poppins-regular text-muted"
 value={menuName}
 onChange={e=>setMenuName(e.target.value)}/>
 </div>
 
 <div className="col-md-4">
-<label className="poppins-medium">Icon</label>
-<input type="file" className="form-control poppins-regular"
+<label className="poppins-regular">Icon</label>
+<input type="file" className="form-control poppins-regular text-muted"
 onChange={e=>setMenuIcon(e.target.files[0])}/>
 </div>
 
 <div className="col-md-3">
-<label className="poppins-medium">Status</label>
+<label className="poppins-regular">Status</label>
 <div className="btn-group w-100">
 <button onClick={()=>setStatus(true)}
 className="btn text-white poppins-semibold"

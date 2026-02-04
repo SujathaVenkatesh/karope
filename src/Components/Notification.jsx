@@ -17,7 +17,7 @@ return(
 <div className="container-fluid p-4 poppins-regular" style={{background:"#faf4f3"}}>
 
 <h4 className="poppins-bold text-color">Notification</h4>
-<p>Monitor and manage all user notifications</p>
+<p className="text-muted">Monitor and manage all user notifications</p>
 
 {/* TOP CARD */}
 <div className="card shadow-sm mb-4">
@@ -26,31 +26,31 @@ return(
 <div className="row g-3">
 
 <div className="col-md-4">
-<label className="poppins-medium">Select Users</label>
-<select className="form-select poppins-regular">
+<label className="poppins-regular">Select Users</label>
+<select className="form-select poppins-regular text-muted">
 <option>Recharge Expire Users</option>
 </select>
 </div>
 
 <div className="col-md-4">
-<label className="poppins-medium">Type</label>
-<select className="form-select poppins-regular">
+<label className="poppins-regular">Type</label>
+<select className="form-select poppins-regular text-muted">
 <option>Recharge</option>
 </select>
 </div>
 
 <div className="col-md-4">
-<label className="poppins-medium">Title</label>
-<select className="form-select poppins-regular">
+<label className="poppins-regular">Title</label>
+<select className="form-select poppins-regular text-muted">
 <option>Recharge Reminder</option>
 </select>
 </div>
 
 <div className="col-12">
-<label className="poppins-medium">Message</label>
+<label className="poppins-regular">Message</label>
 <textarea
 rows="4"
-className="form-control poppins-regular"
+className="form-control poppins-regular text-muted"
 defaultValue={`Your recharge is expiring soon.
 Recharge now to avoid service interruption and continue enjoying benefits.`}
 />
@@ -76,18 +76,18 @@ Send
 <div className="row g-3 mb-3">
 
 <div className="col-md-4">
-<label className="poppins-medium">Type</label>
-<input className="form-control poppins-regular" placeholder="Search"/>
+<label className="poppins-regular">Type</label>
+<input className="form-control poppins-regular text-muted" placeholder="Search"/>
 </div>
 
 <div className="col-md-4">
-<label className="poppins-medium">From Date</label>
-<input type="date" className="form-control poppins-regular"/>
+<label className="poppins-regular">From Date</label>
+<input type="date" className="form-control poppins-regular text-muted"/>
 </div>
 
 <div className="col-md-4">
-<label className="poppins-medium">To Date</label>
-<input type="date" className="form-control poppins-regular"/>
+<label className="poppins-regular">To Date</label>
+<input type="date" className="form-control poppins-regular text-muted"/>
 </div>
 
 </div>
