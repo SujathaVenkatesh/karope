@@ -32,9 +32,9 @@ const Sidebar = () => {
           <FaUsers /> Users
         </li> </Link>
 
-        <li className="nav-item d-flex align-items-center gap-2">
+        <Link to="/transaction" className="text-decoration-none text-white"> <li className="nav-item d-flex align-items-center gap-2">
           <FaExchangeAlt /> Transactions
-        </li>
+        </li> </Link>
         <li className="nav-item d-flex align-items-center gap-2">
           <FaThLarge /> Menu
         </li>
