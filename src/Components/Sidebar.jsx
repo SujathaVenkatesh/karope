@@ -38,47 +38,16 @@ const Sidebar = () => {
 
       {/* MENU */}
       <ul className="sidebar-menu">
-        {menuItem("/", <FaHome />, "DASHBOARD")}
+        {menuItem("/dash", <FaHome />, "DASHBOARD")}
         {menuItem("/user", <FaUsers />, "USERS")}
-        <li className="sidebar-item">
-          <FaExchangeAlt />
-          <span>TRANSACTIONS</span>
-        </li>
-        <li className="sidebar-item">
-          <FaThLarge />
-          <span>MENU</span>
-        </li>
-        <li className="sidebar-item">
-          <FaUsers />
-          <span>OPERATOR</span>
-        </li>
-        <li className="sidebar-item">
-          <FaBell />
-          <span>NOTIFICATION</span>
-        </li>
-
+        {menuItem("/transaction", <FaExchangeAlt />, "TRANSACTIONS")}
+        {menuItem("/menu", <FaThLarge />, "MENU")}
+        {menuItem("/operatorsetting", <FaUsers />, "OPERATOR")}
+        {menuItem("/notification", <FaBell />, "NOTIFICATION")}
         {menuItem("/frequent", <FaHeadset />, "SUPPORT")}
+       {menuItem("/settings", <FaCog />, "SETTINGS")}
 
 
-        <Link to="/settings" className="text-decoration-none text-white"> <li className="nav-item d-flex align-items-center gap-3 mt-2">
-          <FaCog size={23} /> SETTINGS
-        </li> </Link>
-
-        <Link to="/transactions" className="text-decoration-none text-white"> <li className="nav-item d-flex align-items-center gap-2">
-          <FaExchangeAlt /> Transactions
-        </li> </Link>
-        <Link to="/menu" className="text-decoration-none text-white"> <li className="nav-item d-flex align-items-center gap-2">
-          <FaThLarge /> Menu
-        </li> </Link> 
-        <Link to="/notification" className="text-decoration-none text-white"> <li className="nav-item d-flex align-items-center gap-2">
-          <FaBell /> Notification
-        </li> </Link>
-        <Link to="/support" className="text-decoration-none text-white"> <li className="nav-item d-flex align-items-center gap-2">
-          <FaHeadset /> Support
-        </li> </Link>
-        <Link to="/settings" className="text-decoration-none text-white"> <li className="nav-item d-flex align-items-center gap-2">
-          <FaCog /> Settings
-        </li> </Link>
       </ul>
 
       {/* LOGOUT */}
