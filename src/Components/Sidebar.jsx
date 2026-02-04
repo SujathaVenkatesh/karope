@@ -59,13 +59,25 @@ const Sidebar = () => {
 
         {menuItem("/frequent", <FaHeadset />, "SUPPORT")}
 
-        <li className="sidebar-item">
-          <FaCog />
-          <span>SETTINGS</span>
-        </li>
 
         <Link to="/settings" className="text-decoration-none text-white"> <li className="nav-item d-flex align-items-center gap-3 mt-2">
           <FaCog size={23} /> SETTINGS
+        </li> </Link>
+
+        <Link to="/transactions" className="text-decoration-none text-white"> <li className="nav-item d-flex align-items-center gap-2">
+          <FaExchangeAlt /> Transactions
+        </li> </Link>
+        <Link to="/menu" className="text-decoration-none text-white"> <li className="nav-item d-flex align-items-center gap-2">
+          <FaThLarge /> Menu
+        </li> </Link> 
+        <Link to="/notification" className="text-decoration-none text-white"> <li className="nav-item d-flex align-items-center gap-2">
+          <FaBell /> Notification
+        </li> </Link>
+        <Link to="/support" className="text-decoration-none text-white"> <li className="nav-item d-flex align-items-center gap-2">
+          <FaHeadset /> Support
+        </li> </Link>
+        <Link to="/settings" className="text-decoration-none text-white"> <li className="nav-item d-flex align-items-center gap-2">
+          <FaCog /> Settings
         </li> </Link>
       </ul>
 

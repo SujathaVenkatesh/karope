@@ -10,13 +10,14 @@ import SupportUser from "./Components/UserMessages.jsx";
 import Settings from './Components/Settings.jsx'
 import Login from './Components/Login.jsx'
 
+import Menu from './Components/Menu.jsx'
+import Notification from './Components/Notification.jsx'
 
 
 const routes = () => {
   return (
     <BrowserRouter>
-      <Routes>
-
+        <Routes>
          <Route path="/" element={<Login />} />
 
         <Route element={<Layout />}>
@@ -27,10 +28,14 @@ const routes = () => {
            <Route path="/frequent" element={<Support />} />
           <Route path="/support" element={<SupportUser />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/menu" element={<Menu />} />
+          <Route path="/notification" element={<Notification />} />
         </Route>
-      </Routes>
+          
+        </Routes>
     </BrowserRouter>
-  );
-};
+  )
+}
+
 
 export default routes;
