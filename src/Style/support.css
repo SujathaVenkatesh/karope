@@ -1,0 +1,132 @@
+/* Page wrapper */
+.support-wrapper {
+  padding: 24px;
+}
+
+/* Title */
+.support-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: #2e7d32;
+}
+
+.support-subtitle {
+  margin-bottom: 20px;
+  color: #666;
+}
+
+/* Tabs */
+.support-tabs {
+  background: #fff;
+  padding: 16px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 22px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.tab {
+  padding: 10px 26px;
+  border-radius: 10px;
+  border: 1px solid #9ea7b3;
+  background: #e9ecef;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.tab.active {
+  background: #43a047;
+  color: #fff;
+  border: none;
+}
+
+/* Table container */
+.support-card {
+  width: 100%;
+}
+
+/* COMMON GRID – header & row */
+.support-head,
+.support-row {
+  display: grid;
+  grid-template-columns:
+    80px      /* S.no */
+    3.2fr     /* Query title */
+    1.2fr     /* Category */
+    2.2fr     /* Status */
+    1fr;      /* Action */
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* HEADER */
+.support-head {
+  background: #43a047;
+  color: #fff;
+  padding: 16px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+/* BODY ROW */
+.support-row {
+  background: #fff;
+  padding: 16px 24px;
+  margin-top: 12px;
+  border: 1px solid #9ea7b3;
+  border-radius: 8px;
+}
+
+/* Query title */
+.query-title {
+  font-weight: 500;
+}
+
+/* Category – small adjust */
+.support-head span:nth-child(3),
+.support-row span:nth-child(3) {
+  padding-left: 6px;
+}
+
+/* Status */
+.status {
+  font-weight: 600;
+}
+
+.support-head span:nth-child(4),
+.support-row span:nth-child(4) {
+  padding-left: 10px;
+}
+
+.status small {
+  display: block;
+  font-size: 12px;
+  color: #666;
+  margin-top: 4px;
+}
+
+/* ACTION – right end */
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 16px;
+}
+
+.support-head span:last-child {
+  text-align: right;
+}
+
+/* Icons */
+.actions svg {
+  cursor: pointer;
+  font-size: 18px;
+  color: #333;
+}
+
+.actions svg:hover {
+  color: #43a047;
+}
