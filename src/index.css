@@ -68,3 +68,28 @@
   color: #3f9846;
 }
 
+/* input blue shadow */
+
+.form-control:focus {
+  outline: none;
+  box-shadow: none;
+  border-color: #ced4da;
+}
+
+
+/* login blur */
+
+.blur-overlay {
+  position: fixed;
+  inset: 0;
+  backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1050;
+}
+
+.modal {
+  z-index: 1055;
+}
+
+
+

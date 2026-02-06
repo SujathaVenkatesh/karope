@@ -1,231 +1,13 @@
-// import { useState } from "react";
-// import '../Style/user.css';
-
-
-// const TABS = ["All", "Active Recharge", "Expired Recharge", "No Recharge Users"];
-
-// const usersData = [
-//   {
-//     id: 1,
-//     name: "Rohit",
-//     mobile: "9123456987",
-//     operator: "Airtel",
-//     lastRecharge: "28-01-2026",
-//     plan: "₹449",
-//     status: "Active",
-//     validity: "28-03-2026",
-//   },
-//   {
-//     id: 2,
-//     name: "Suriya",
-//     mobile: "9123456988",
-//     operator: "Jio",
-//     lastRecharge: "26-01-2026",
-//     plan: "₹409",
-//     status: "Active",
-//     validity: "26-03-2026",
-//   },
-//   {
-//     id: 3,
-//     name: "Rohit",
-//     mobile: "9123456987",
-//     operator: "Airtel",
-//     lastRecharge: "01-01-2026",
-//     plan: "₹409",
-//     status: "Expired",
-//     validity: "01-03-2026",
-//   },
-//   {
-//     id: 4,
-//     name: "Rohit",
-//     mobile: "9123456987",
-//     operator: "Airtel",
-//     lastRecharge: null,
-//     plan: null,
-//     status: "No Recharge",
-//     validity: null,
-//   },
-// ];
-
-// const Users = () => {
-//   const [activeTab, setActiveTab] = useState("All");
-//   const [search, setSearch] = useState("");
-//   const [fromDate, setFromDate] = useState("");
-//   const [toDate, setToDate] = useState("");
-
-//   const filteredUsers = usersData.filter((u) => {
-//     if (
-//       search &&
-//       !`${u.name}${u.mobile}`.toLowerCase().includes(search.toLowerCase())
-//     ) {
-//       return false;
-//     }
-
-//     if (activeTab !== "All" && u.status !== activeTab.replace(" Recharge", "")) {
-//       return false;
-//     }
-
-//     if (fromDate && u.lastRecharge && u.lastRecharge < fromDate) return false;
-//     if (toDate && u.lastRecharge && u.lastRecharge > toDate) return false;
-
-//     return true;
-//   });
-
-//   return (
-//     <div className="container-fluid">
-//       {/* Header */}
-//       <div className="mb-4">
-//         <h4 className="poppins-bold text-color">Users List</h4>
-//         <p className="poppins-regular text-muted mb-0">
-//           Manage and monitor recharge app users from a dashboard.
-//         </p>
-//       </div>
-
-//       {/* Tabs */}
-//     <div className="bg-white p-3 rounded shadow-sm d-flex gap-3">
-//   {TABS.map((tab) => (
-//     <button
-//       key={tab}
-//       onClick={() => setActiveTab(tab)}
-//       className={`tab-btn  poppins-bold  ${
-//         activeTab === tab ? "tab-active" : ""
-//       }` }
-//     >
-//       {tab}
-//     </button>
-//   ))}
-// </div>
-
-// <div className="card shadow-sm bg-white mt-5">
-//   <div className="card-body">
-
-//     {/* FILTERS */}
-//     <div className="row g-3 align-items-end mb-3">
-//       <div className="col-lg-3">
-//         <label className="form-label poppins-regular">Username</label>
-//         <input
-//           className="form-control poppins-regular"
-//           placeholder="Search"
-//           value={search}
-//           onChange={(e) => setSearch(e.target.value)}
-//         />
-//       </div>
-
-//       <div className="col-lg-2">
-//         <label className="form-label d-block">&nbsp;</label>
-//         <button className="btn btn-success w-100 poppins-regular">
-//           Export CSV
-//         </button>
-//       </div>
-
-//       <div className="col-lg-2"></div>
-
-//       <div className="col-lg-2">
-//         <label className="form-label poppins-regular">From Date</label>
-//         <input
-//           type="date"
-//           className="form-control poppins-light text-muted"
-//           value={fromDate}
-//           onChange={(e) => setFromDate(e.target.value)}
-//         />
-//       </div>
-
-//       <div className="col-lg-2">
-//         <label className="form-label poppins-regular">To Date</label>
-//         <input
-//           type="date"
-//           className="form-control poppins-light text-muted"
-//           value={toDate}
-//           onChange={(e) => setToDate(e.target.value)}
-//         />
-//       </div>
-//     </div>
-
-//     {/* TABLE */}
-//     <div className="table-responsive text-center poppins-medium ">
-//       <table
-//         className="table table-bordered align-middle mb-0"
-
-//       >
-//         <thead className="custom-table-head th">
-//           <tr>
-//             <th>S.No</th>
-//             <th>User</th>
-//             <th>Operation</th>
-//             <th>Last Recharge</th>
-//             <th>Plan</th>
-//             <th>Status</th>
-//             <th>Validity</th>
-//             <th>Action</th>
-//           </tr>
-//         </thead>
-
-//         <tbody>
-//           {filteredUsers.map((u, i) => (
-//             <tr key={u.id} >
-//               <td>{i + 1}</td>
-
-//               <td>
-//                 <h6>{u.name}</h6>
-
-//                 <span className="text-muted">{u.mobile}</span>
-//               </td>
-
-//               <td>{u.operator}</td>
-//               <td>{u.lastRecharge || "None"}</td>
-//               <td>{u.plan || "None"}</td>
-
-//               <td>
-//                 <span
-//                   className={`fw-semibold ${
-//                     u.status === "Active"
-//                       ? "text-success"
-//                       : u.status === "Expired"
-//                       ? "text-danger"
-//                       : "text-muted"
-//                   }`}
-//                 >
-//                   {u.status}
-//                 </span>
-//               </td>
-
-//               <td>{u.validity || "None"}</td>
-
-//               <td className="text-center">⋮</td>
-//             </tr>
-//           ))}
-
-//           {filteredUsers.length === 0 && (
-//             <tr>
-//               <td colSpan="8" className="text-center text-muted py-4">
-//                 No users found
-//               </td>
-//             </tr>
-//           )}
-//         </tbody>
-//       </table>
-//     </div>
-
-//   </div>
-// </div>
-//     </div>
-
-
-
-
-//   );
-// };
-
-// export default Users;
-
 import { useState } from "react";
 import "../Style/user.css";
 import vector from '../assets/img/vector.png';
+import { Link } from "react-router-dom";
+
 
 const TABS = [
     "All",
     "Active Recharge",
-    "Expired Recharge",
+    // "Expired Recharge",
     "No Recharge Users",
 ];
 
@@ -254,24 +36,24 @@ const usersData = [
     },
     {
         id: 3,
-        name: "Rohit",
-        mobile: "9123456987",
+        name: "Priya",
+        mobile: "9123456999",
         operator: "Airtel",
         lastRecharge: "01-01-2026",
-        plan: "₹409",
-        status: "Expired",
+        plan: "₹799",
+        status: "Active",
         validity: "01-03-2026",
         icon: vector
     },
     {
         id: 4,
-        name: "Rohit",
-        mobile: "9123456987",
-        operator: "Airtel",
-        lastRecharge: null,
-        plan: null,
+        name: "Roshan",
+        mobile: "9123456900",
+        operator: "None",
+        lastRecharge: "None",
+        plan: "None",
         status: "No Recharge",
-        validity: null,
+        validity: "None",
         icon: vector
     },
 ];
@@ -289,7 +71,7 @@ const Users = () => {
     };
 
 
-    // ✅ FILTER LOGIC (FIXED)
+    //  FILTER LOGIC (FIXED)
     const filteredUsers = usersData.filter((u) => {
         if (
             search &&
@@ -365,7 +147,7 @@ const Users = () => {
             <div className="mb-4">
                 <h4 className="poppins-bold text-color">Users List</h4>
                 <p className="poppins-regular text-muted mb-0">
-                    Manage and monitor recharge app users from a dashboard.
+                    Manage and Monitor Recharge App Users from a Dashboard.
                 </p>
             </div>
 
@@ -390,6 +172,7 @@ const Users = () => {
                     <div className="row g-3 align-items-end mb-3">
                         <div className="col-lg-3">
                             <label className="form-label poppins-regular">Username</label>
+
                             <input
                                 className="form-control poppins-regular"
                                 placeholder="Search"
@@ -414,7 +197,7 @@ const Users = () => {
                             <label className="form-label poppins-regular">From Date</label>
                             <input
                                 type="date"
-                                className="form-control"
+                                className="form-control poppins-regular text-muted"
                                 value={fromDate}
                                 onChange={(e) => setFromDate(e.target.value)}
                             />
@@ -424,7 +207,7 @@ const Users = () => {
                             <label className="form-label poppins-regular">To Date</label>
                             <input
                                 type="date"
-                                className="form-control"
+                                className="form-control poppins-regular text-muted"
                                 value={toDate}
                                 onChange={(e) => setToDate(e.target.value)}
                             />
@@ -453,7 +236,7 @@ const Users = () => {
                                         <td>{i + 1}</td>
 
                                         <td>
-                                            <h6 className="mb-0 poppins-semibold">{u.name}</h6>
+                                            <h6 className="mb-0">{u.name}</h6>
                                             <span className="text-muted">{u.mobile}</span>
                                         </td>
 
@@ -464,10 +247,10 @@ const Users = () => {
                                         <td>
                                             <span
                                                 className={`fw-semibold ${u.status === "Active"
-                                                        ? "text-success"
-                                                        : u.status === "Expired"
-                                                            ? "text-danger"
-                                                            : "text-muted"
+                                                    ? "text-success"
+                                                    : u.status === "Expired"
+                                                        ? "text-danger"
+                                                        : "text-muted"
                                                     }`}
                                             >
                                                 {u.status}
@@ -476,13 +259,15 @@ const Users = () => {
 
                                         <td>{u.validity || "None"}</td>
                                         <td className="text-center">
-                                            <img
-                                                src={u.icon}
-                                                alt="action"
-                                                width={20}
-                                                height={15}
-                                                style={{ cursor: "pointer" }}
-                                            />
+                                            <Link to={`/user/${u.id}`}>
+                                                <img
+                                                    src={u.icon}
+                                                    alt="action"
+                                                    width={20}
+                                                    height={15}
+                                                    style={{ cursor: "pointer" }}
+                                                />
+                                            </Link>
                                         </td>
 
                                     </tr>

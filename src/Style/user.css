@@ -3,11 +3,9 @@
   height: 40px;
 
   border-radius: 8px;
-
-
   border: 1px solid #9ca3af;
   background-color: #f3f4f6;
-  color: #348D3B;
+  color: #3f9846;
 
   display: flex;
   align-items: center;
@@ -19,7 +17,7 @@
 }
 
 .tab-active {
-  background-color: #348D3B !important;
+  background-color: #399c41 !important;
   color: #ffffff !important;
-  border-color: #348D3B !important;
+  border-color: #757575 !important;
 }

@@ -7,10 +7,12 @@ import {
   FaHeadset,
   FaCog,
   FaSignOutAlt,
+  FaMobileAlt,
+  FaBars
 } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
 import "../Style/sidebar.css";
-import logo from '../assets/img/logo.jpeg'
+import logo from '../assets/img/logo.png'
 
 const Sidebar = () => {
   const location = useLocation();
@@ -18,9 +20,8 @@ const Sidebar = () => {
   const menuItem = (to, icon, label) => (
     <Link to={to} className="sidebar-link">
       <li
-        className={`sidebar-item ${
-          location.pathname === to ? "active" : ""
-        }`}
+        className={`sidebar-item ${location.pathname.startsWith(to) ? "active" : ""
+          }`}
       >
         {icon}
         <span>{label}</span>
@@ -29,39 +30,26 @@ const Sidebar = () => {
   );
 
   return (
-    <aside className="sidebar">
+    <aside className="sidebar ">
       {/* LOGO */}
       <div className="sidebar-logo">
-        <img src={logo} alt="logo" className="" />
+        <img src={logo} alt="logo" className=""/>
       </div>
 
       {/* MENU */}
       <ul className="sidebar-menu">
-        {menuItem("/", <FaHome />, "DASHBOARD")}
+        {menuItem("/dash", <FaHome />, "DASHBOARD")}
         {menuItem("/user", <FaUsers />, "USERS")}
-        <li className="sidebar-item">
-          <FaExchangeAlt />
-          <span>TRANSACTIONS</span>
-        </li>
-        <li className="sidebar-item">
-          <FaThLarge />
-          <span>MENU</span>
-        </li>
-        <li className="sidebar-item">
-          <FaUsers />
-          <span>OPERATOR</span>
-        </li>
-        <li className="sidebar-item">
-          <FaBell />
-          <span>NOTIFICATION</span>
-        </li>
 
+        {menuItem("/transaction", <FaExchangeAlt />, "TRANSACTIONS")}
+        {menuItem("/menu", <FaThLarge />, "MENU")}
+        {menuItem("/banner", <FaBars />, "BANNER")}
+        {menuItem("/operatorsetting", <FaMobileAlt />, "OPERATOR")}
+        {menuItem("/notification", <FaBell />, "NOTIFICATION")}
         {menuItem("/frequent", <FaHeadset />, "SUPPORT")}
+        {menuItem("/settings", <FaCog />, "SETTINGS")}
 
-        <li className="sidebar-item">
-          <FaCog />
-          <span>SETTINGS</span>
-        </li>
+
       </ul>
 
       {/* LOGOUT */}
