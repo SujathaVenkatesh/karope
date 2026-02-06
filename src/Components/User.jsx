@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 const TABS = [
     "All",
     "Active Recharge",
-    "Expired Recharge",
+    // "Expired Recharge",
     "No Recharge Users",
 ];
 
@@ -41,7 +41,7 @@ const usersData = [
         operator: "Airtel",
         lastRecharge: "01-01-2026",
         plan: "₹799",
-        status: "Expired",
+        status: "Active",
         validity: "01-03-2026",
         icon: vector
     },
@@ -147,7 +147,7 @@ const Users = () => {
             <div className="mb-4">
                 <h4 className="poppins-bold text-color">Users List</h4>
                 <p className="poppins-regular text-muted mb-0">
-                    Manage and monitor recharge app users from a dashboard.
+                    Manage and Monitor Recharge App Users from a Dashboard.
                 </p>
             </div>
 
@@ -236,7 +236,7 @@ const Users = () => {
                                         <td>{i + 1}</td>
 
                                         <td>
-                                            <h6 className="mb-0 poppins-medium">{u.name}</h6>
+                                            <h6 className="mb-0">{u.name}</h6>
                                             <span className="text-muted">{u.mobile}</span>
                                         </td>
 

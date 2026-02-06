@@ -126,18 +126,18 @@ function Transaction() {
   };
 
   return (
-    <div className="container-fluid p-4 bg-light min-vh-100">
+    <div className="container-fluid">
 
       {/* HEADER */}
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div>
           <h4 className="poppins-bold text-color">Transaction</h4>
-          <p className="poppins-regular mb-0">
-            Manage and monitor all recharge activities.
+          <p className="poppins-regular mb-0 text-muted">
+            Manage and Monitor All Recharge Activities.
           </p>
         </div>
-        <button className="btn px-280 poppins-medium text-white" onClick={handleExport} style={{backgroundColor:"#399C41"}}>
-          Export
+        <button className="btn  poppins-regular text-white" onClick={handleExport} style={{backgroundColor:"#399C41"}}>
+          Export CSV
         </button>
       </div>
 
@@ -148,7 +148,7 @@ function Transaction() {
           <div className="col-md-4">
             <label className="form-label poppins-regular">Date Range</label>
             <select
-              className="form-select poppins-medium text-muted"
+              className="form-select form-control poppins-regular text-muted"
               value={dateRange}
               onChange={(e) => setDateRange(e.target.value)}
             >
@@ -162,7 +162,7 @@ function Transaction() {
           <div className="col-md-4">
             <label className="form-label poppins-regular ">Status</label>
             <select
-              className="form-select poppins-regular text-muted"
+              className="form-select form-control poppins-regular text-muted"
               value={status}
               onChange={(e) => setStatus(e.target.value)}
             >
@@ -188,7 +188,7 @@ function Transaction() {
       </div>
 
       {/* TABLE */}
-      <div className="card p-3 mb-4">
+      <div className="card p-3 mb-4 mt-5">
         <div className="table-responsive text-center poppins-medium">
           <div className="table-responsive text-center poppins-medium">
             <table className="table table-bordered align-middle ">
@@ -211,8 +211,8 @@ function Transaction() {
                     <td>{i + 1}</td>
                     <td>{t.transactionId}</td>
                     <td>
-                      <h6>{t.user}</h6>
-                      <small className="text-muted">{t.mobile}</small>
+                      <h6 className="mb-0">{t.user}</h6>
+                      <span className="text-muted">{t.mobile}</span>
                     </td>
                     <td>{t.operator}</td>
                     <td>{t.type}</td>
@@ -230,7 +230,7 @@ function Transaction() {
                       </span>
                     </td>
                     <td style={{ whiteSpace: 'pre-line' }}>
-                      {t.date}<br /> <small>{t.time}</small>
+                      {t.date}<br /> <small className='text-muted'>{t.time}</small>
                     </td>
                   </tr>
                 ))}

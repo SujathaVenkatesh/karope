@@ -9,16 +9,17 @@ const Settings = () => {
     newPassword: "",
   });
 
-  const [banner, setBanner] = useState({
-    title: "",
-    description: "",
-    image: null,
+  const [setting, setSetting] = useState({
+    email: "",
+    password: "",
+    new: null,
   });
 
   const handleSave = () => {
    
     console.log("Account:", account);
-    console.log("Banner:", banner);
+    console.log("Settings:", setting);
+    // console.log("Banner:", banner);
 
     setIsEdit(false);
   };
@@ -30,7 +31,7 @@ const Settings = () => {
       <div className="mb-4">
         <h4 className="poppins-bold text-color">Settings</h4>
         <p className="text-muted mb-0 poppins-regular">
-          Manage your account credentials and recharge business logic.
+          Manage your Account Credentials and Recharge Business Logic.
         </p>
       </div>
 
@@ -84,61 +85,9 @@ const Settings = () => {
               />
             </div>
           </div>
-        </div>
-      </div>
+        
 
-      {/* BANNER SETTINGS */}
-      <div className="card shadow-sm mb-4">
-        <div className="card-body">
-          <h5 className="poppins-bold text-color mb-3">
-            Banner Settings
-          </h5>
-
-          <div className="row g-3">
-            <div className="col-lg-6">
-              <label className="form-label poppins-regular">Title</label>
-              <input
-                type="text"
-                className="form-control poppins-regular"
-                disabled={!isEdit}
-                value={banner.title}
-                placeholder="Enter Title"
-                onChange={(e) =>
-                  setBanner({ ...banner, title: e.target.value })
-                }
-              />
-            </div>
-
-            <div className="col-lg-6">
-              <label className="form-label poppins-regular">Description</label>
-              <input
-                type="text"
-                className="form-control poppins-regular"
-                disabled={!isEdit}
-                value={banner.description}
-                placeholder="Enter Description"
-                onChange={(e) =>
-                  setBanner({ ...banner, description: e.target.value })
-                }
-              />
-            </div>
-
-            <div className="col-lg-6">
-              <label className="form-label poppins-regular">Image</label>
-              <input
-                type="file"
-                className="form-control poppins-regular"
-                disabled={!isEdit}
-                onChange={(e) =>
-                  setBanner({ ...banner, image: e.target.files[0] })
-                }
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ACTION BUTTONS */}
+       {/* ACTION BUTTONS */}
       <div className="d-flex justify-content-end gap-2">
         {!isEdit ? (
           <button
@@ -165,6 +114,8 @@ const Settings = () => {
         )}
       </div>
     </div>
+    </div>
+      </div>
   );
 };
 

@@ -10,9 +10,9 @@ import Support from "./Components/Support.jsx";
 import SupportUser from "./Components/UserMessages.jsx";
 import Settings from './Components/Settings.jsx'
 import Login from './Components/Login.jsx'
-
 import Menu from './Components/Menu.jsx'
 import Notification from './Components/Notification.jsx'
+import Banner from './Components/Banner.jsx'
 
 
 const routes = () => {
@@ -31,6 +31,7 @@ const routes = () => {
           <Route path="/support" element={<SupportUser />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/menu" element={<Menu />} />
+          <Route path="/banner" element={<Banner />} />
           <Route path="/notification" element={<Notification />} />
           <Route path="/transaction" element={<Transaction/>}/>
         </Route>

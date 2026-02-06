@@ -15,6 +15,7 @@
   padding: 25px 0;
   display: flex;
   justify-content: center;
+ 
 }
 
 .sidebar-logo img {
@@ -46,7 +47,7 @@
   padding: 10px 14px;
   border-radius: 10px;
   color: #fff;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   cursor: pointer;
 }
@@ -59,6 +60,7 @@
 .sidebar-item.active {
   background: #ffffff;
   color: #3c9b3f;
+  font-weight: bold;
 }
 
 .sidebar-item.active svg {

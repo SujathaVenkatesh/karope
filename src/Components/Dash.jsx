@@ -5,6 +5,8 @@ import { Line, Doughnut } from "react-chartjs-2";
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, ArcElement, Tooltip, Legend);
 
+import {Link} from "react-router-dom";
+
 const Dash = () => {
 
   //  graph
@@ -70,7 +72,7 @@ const Dash = () => {
           <Dashcard
             title="Total Users"
             value="2,543"
-            percent="+12.5%"
+            // percent="+12.5%"
             type="users"
           />
 
@@ -89,15 +91,15 @@ const Dash = () => {
           />
 
           <Dashcard
-            title="Prepaid / Postpaid"
-            value="743 / 1045"
+            title="Overall Recharge"
+            value="2475"
             type="prepaid"
           />
         </div>
       </div>
 
       {/* CHART SECTION */}
-      <div className="row mb-4">
+      <div className="row mb-4 mt-5">
         {/* LEFT: Recharge Line Chart */}
         <div className="col-lg-8 mb-4">
           <div className="card shadow-sm h-100">
@@ -143,9 +145,9 @@ const Dash = () => {
         <div className="card-body">
           <div className="d-flex justify-content-between mb-3">
             <h5 className="poppins-bold text-color">Transactions History</h5>
-            <a href="#" className="text-color poppins-medium text-decoration-none">
+          <Link to="/transaction" className="text-decoration-none">  <a href="#" className="text-color poppins-medium text-decoration-none">
               View All
-            </a>
+            </a> </Link>
           </div>
 
           <div className="table-responsive text-center poppins-medium">
@@ -174,7 +176,7 @@ const Dash = () => {
                   <td>₹799</td>
                   <td>UPI</td>
                   <td className="text-success poppins-semibold">Success</td>
-                  <td>Jan 02, 2026<br />11:03 AM</td>
+                  <td>Jan 02, 2026<br /> <small className="text-muted">11:03 AM </small></td>
                 </tr>
 
                 <tr>
@@ -186,7 +188,7 @@ const Dash = () => {
                   <td>₹409</td>
                   <td>Card</td>
                   <td className="text-danger poppins-semibold">Failed</td>
-                  <td>Jan 02, 2026<br />11:03 AM</td>
+                  <td>Jan 02, 2026<br /> <small className="text-muted">11:03 AM </small></td>
                 </tr>
 
                 <tr>
@@ -198,7 +200,7 @@ const Dash = () => {
                   <td>₹799</td>
                   <td>UPI</td>
                   <td className="text-success poppins-semibold">Success</td>
-                  <td>Jan 02, 2026<br />11:03 AM</td>
+                  <td>Jan 02, 2026<br /> <small className="text-muted">11:03 AM </small></td>
                 </tr>
               </tbody>
             </table>

@@ -149,7 +149,7 @@ const UserDetails = () => {
       <div className="mb-3">
         <h4 className="poppins-bold text-color">Users List</h4>
         <p className="text-muted poppins-regular mb-0">
-          Manage and monitor all platform participants from a central hub.
+          View Particular User Details from a Centralized Dashboard.
         </p>
       </div>
 
@@ -239,7 +239,7 @@ const UserDetails = () => {
                 <tr className="custom-table-head th">
                   <th>S.no</th>
                   <th>Transaction ID</th>
-                  <th>User</th>
+                  <th>Mobile Number</th>
                   <th>Operation</th>
                   <th>Type</th>
                   <th>Amount</th>
@@ -257,7 +257,7 @@ const UserDetails = () => {
                     <td>{data.transactionId}</td> 
 
                     <td>
-                      <h6 className="mb-0">{user.name}</h6>
+                      {/* <h6 className="mb-0">{user.name}</h6> */}
                       <span className="text-muted">{user.mobile}</span>
                     </td>
 
