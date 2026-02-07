@@ -1,9 +1,29 @@
 import { useState } from "react";
 import loginimg from '../assets/img/loginimg.png'; 
 import { Link } from "react-router-dom";
+import { useLoginMutation } from "../Redux/Api/Api";
 
 const Login = () => {
   const [showForgot, setShowForgot] = useState(false);
+  const [loginapi] = useLoginMutation();    
+  const loginfun = () => 
+  {
+   const data = {
+    email:"nandhu.105.nandhu@gmail.com",
+    password:"karope"
+   }
+   console.log("login data",data);
+
+       loginapi(data).unwrap()
+       .then((res)=>
+       {
+          console.log("login api response",res);
+       })
+       .catch((err)=>
+       {
+          console.log("login api error",err);
+       })
+  }
 
   return (
     <div
@@ -53,11 +73,11 @@ const Login = () => {
                   </button>
                 </div>
 
-              <Link to="/dash">  <button className="btn w-100 py-2 poppins-semibold text-white" style={{
+               <button className="btn w-100 py-2 poppins-semibold text-white" style={{
                     backgroundColor:"#399C41",
-                  }}>
+                  }} onClick={loginfun}>
                   Login
-                </button> </Link>
+                </button> 
               </div>
             </div>
           </div>
