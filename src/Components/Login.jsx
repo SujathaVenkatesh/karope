@@ -103,6 +103,50 @@ const Login = () => {
       })
   }
 
+
+  const submitfunc = () => {
+  // Optional validation
+  // if (!validateFpStep3()) return;
+
+  const submitdata = {
+    email: fpForm.email,
+    otp: fpForm.otp,
+    password: fpForm.newPassword,
+    confirmPassword: fpForm.confirmNewPassword,
+  };
+
+  newPassword(submitdata)
+    .unwrap()
+    .then((res) => {
+      setFpStatus({
+        type: "success",
+        message: res?.message || "Password updated",
+      });
+
+      // Close modal after success
+      setTimeout(() => {
+        setShowForgot(false);
+        setFpStep(1);
+        setFpForm({
+          email: "",
+          otp: "",
+          otpRequestId: "",
+          resetToken: "",
+          newPassword: "",
+          confirmNewPassword: "",
+        });
+        setFpErrors({});
+      }, 1200);
+    })
+    .catch((err) => {
+      setFpStatus({
+        type: "error",
+        message: err?.data?.message || "Failed to update password",
+      });
+    });
+};
+
+
   const validators = {
     email: [required("Email is required"), emailRule()],
     password: [required("Password is required")],
@@ -365,10 +409,7 @@ const Login = () => {
                       {/* ===== OTP SECTION (appears BELOW) ===== */}
                       {fpStep === 2 && (
                         <>
-                          <p className="text-center text-muted poppins-light mt-4">
-                            Enter the OTP sent to your email
-                          </p>
-
+                          
                           <div className="mb-3">
                             <label className="form-label poppins-regular">OTP</label>
                             <input
@@ -405,9 +446,7 @@ const Login = () => {
                   {/* ===== STEP 3 : NEW POPUP (RESET PASSWORD) ===== */}
                   {fpStep === 3 && (
                     <>
-                      <p className="text-center text-muted poppins-light mb-4">
-                        Create a new password
-                      </p>
+                     
 
                       <div className="mb-3">
                         <label className="form-label poppins-regular">
@@ -445,41 +484,8 @@ const Login = () => {
                       <button
                         className="btn w-100 py-2 text-white poppins-semibold"
                         style={{ backgroundColor: "#399C41" }}
-                        onClick={async () => {
-                          if (!validateFpStep3()) return;
-
-                          try {
-                            const res = await newPassword({
-                              resetToken: fpForm.resetToken,
-                              newPassword: fpForm.newPassword,
-                              confirmNewPassword: fpForm.confirmNewPassword,
-                            }).unwrap();
-
-                            setFpStatus({
-                              type: "success",
-                              message: res?.message || "Password updated",
-                            });
-
-                            // Close after success
-                            setTimeout(() => {
-                              setShowForgot(false);
-                              setFpStep(1);
-                              setFpForm({
-                                email: "",
-                                otp: "",
-                                otpRequestId: "",
-                                resetToken: "",
-                                newPassword: "",
-                                confirmNewPassword: "",
-                              });
-                            }, 1200);
-                          } catch (err) {
-                            setFpStatus({
-                              type: "error",
-                              message:
-                                err?.data?.message || "Failed to update password",
-                            });
-                          }
+                        onClick={() => {
+                         submitfunc()
                         }}
                       >
                         Submit
