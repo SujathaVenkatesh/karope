@@ -70,20 +70,13 @@ const Login = () => {
     });
   }
 
-  ///////////////////
-
-  // if (!validateFpStep2()) return;
-
-  // try {
-  //   const res = await otpPassword({
-  //     otpRequestId: fpForm.otpRequestId,
-  //     otp: fpForm.otp,
-  //   }).unwrap();
+ 
 
   const verifyotp = () => {
 
   const dataotp = {
-    otp: fpForm.otpRequestId,
+    email: fpForm.email,
+    otp: fpForm.otp,
   }
   console.log(dataotp)
 
@@ -109,7 +102,7 @@ const Login = () => {
     });
       })
   }
-//////////////////
+
   const validators = {
     email: [required("Email is required"), emailRule()],
     password: [required("Password is required")],
