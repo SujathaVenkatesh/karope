@@ -74,6 +74,15 @@ export const api = createApi({
         body: payload,
       }),
     }),
+
+    logout: builder.mutation({
+      query: (payload) => ({
+        url: URL.LOGOUT,
+        method: "POST",
+        body: payload,
+      }),
+    }),
+    
   }),
 });
 
@@ -85,6 +94,6 @@ export const {
   useForgotPasswordMutation,
   useOtpPasswordMutation,
   useNewPasswordMutation,
-  
+  useLogoutMutation,
 } = api;
 

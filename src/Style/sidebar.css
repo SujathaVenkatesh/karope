@@ -87,3 +87,11 @@
   gap: 10px;
   cursor: pointer;
 }
+/* Sidebar Logout button - default green */
+
+
+/* Hover → RED */
+.sidebar-logout .btn-success:hover {
+  background-color: #dc3545 !important;
+  color: #fff;
+}
