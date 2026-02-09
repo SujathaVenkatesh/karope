@@ -1,7 +1,7 @@
 import { useState } from "react";
 import loginimg from '../assets/img/loginimg.png';
 import { Link } from "react-router-dom";
-import { useLoginMutation, useForgotPasswordMutation, useOtpPasswordMutation, useNewPasswordMutation } from "../Redux/Api/Api";
+import { useLoginMutation, useForgotPasswordMutation, useOtpPasswordMutation, useResetPasswordMutation } from "../Redux/Api/Api";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import useUser from "../Redux/Local/userDetail";
@@ -37,7 +37,7 @@ const Login = () => {
   const [loginApi] = useLoginMutation();
   const [forgotPassword] = useForgotPasswordMutation();
   const [otpPassword] = useOtpPasswordMutation();
-  const [newPassword] = useNewPasswordMutation();
+  const [newPassword] = useResetPasswordMutation();
 
 
   const sendotpfunc = () => {
@@ -219,8 +219,6 @@ const Login = () => {
   const [fpForm, setFpForm] = useState({
     email: "",
     otp: "",
-    otpRequestId: "",
-    resetToken: "",
     newPassword: "",
     confirmNewPassword: "",
   });

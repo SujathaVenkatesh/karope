@@ -5,7 +5,7 @@ export const URL = {
   PASSWORD_FORGOT: 'auth/admin/forgot-password',
   PASSWORD_OTP: 'auth/admin/verify-otp',
   PASSWORD_RESET: 'auth/admin/reset-password',
-  PASSWORD_NEW: 'auth/admin/reset-password'
+ 
   
  
 };
