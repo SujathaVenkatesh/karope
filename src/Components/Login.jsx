@@ -1,7 +1,7 @@
 import { useState } from "react";
 import loginimg from '../assets/img/loginimg.png';
 import { Link } from "react-router-dom";
-import { useLoginMutation } from "../Redux/Api/Api";
+import { useLoginMutation, useForgotPasswordMutation, useOtpPasswordMutation, useNewPasswordMutation } from "../Redux/Api/Api";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import useUser from "../Redux/Local/userDetail";
@@ -14,16 +14,16 @@ const FieldError = ({ message }) =>
 
 const required =
   (msg = "Required") =>
-  (v) =>
-    !v || (typeof v === "string" && v.trim() === "") ? msg : "";
+    (v) =>
+      !v || (typeof v === "string" && v.trim() === "") ? msg : "";
 
 const emailRule =
   (msg = "Enter a valid email") =>
-  (v) => {
-    if (!v) return "Required";
-    const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
-    return ok ? "" : msg;
-  };
+    (v) => {
+      if (!v) return "Required";
+      const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+      return ok ? "" : msg;
+    };
 
 const Login = () => {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -35,10 +35,81 @@ const Login = () => {
   const navigate = useNavigate();
 
   const [loginApi] = useLoginMutation();
-  // const [forgotPassword] = useForgotPasswordMutation();
-  // const [otpPassword] = useOtpPasswordMutation();
-  // const [newPassword] = useNewPasswordMutation();
+  const [forgotPassword] = useForgotPasswordMutation();
+  const [otpPassword] = useOtpPasswordMutation();
+  const [newPassword] = useNewPasswordMutation();
 
+
+  const sendotpfunc = () => {
+
+    // if (!validateFpStep1()) return;
+
+    const data = {
+      email: fpForm.email,
+    }
+    console.log(data)
+
+    forgotPassword(data).unwrap().then(res => {
+      console.log("Forgot Password Response:", res);
+      setFpForm((prev) => ({
+        ...prev,
+        otpRequestId: res?.otpRequestId || "",
+      }));
+      setFpStatus({
+        type: "success",
+        message: res?.message,
+      });
+
+      setFpStep(2);
+    }).catch(err => {
+      console.error("Forgot Password Error:", err);
+      setFpStatus({
+        type: "error",
+        message: err?.data?.message || "Failed to send OTP",
+      });
+    });
+  }
+
+  ///////////////////
+
+  // if (!validateFpStep2()) return;
+
+  // try {
+  //   const res = await otpPassword({
+  //     otpRequestId: fpForm.otpRequestId,
+  //     otp: fpForm.otp,
+  //   }).unwrap();
+
+  const verifyotp = () => {
+
+  const dataotp = {
+    otp: fpForm.otpRequestId,
+  }
+  console.log(dataotp)
+
+ otpPassword(dataotp).unwrap().then(res => {
+    console.log("otp:", res)
+
+    setFpForm((prev) => ({
+      ...prev,
+      resetToken: res?.resetToken || "",
+    }));
+
+    setFpStatus({
+      type: "success",
+      message: res?.message,
+    });
+
+    setFpStep(3);
+  }).catch (err => {
+    console.error("otperr:", err)
+    setFpStatus({
+      type: "error",
+      message: err?.data?.message || "Invalid OTP",
+    });
+      })
+  }
+//////////////////
   const validators = {
     email: [required("Email is required"), emailRule()],
     password: [required("Password is required")],
@@ -116,7 +187,7 @@ const Login = () => {
     newPassword: "",
     confirmNewPassword: "",
   });
-
+  console.log("Forgot Password Form State:", fpForm);
   const [fpErrors, setFpErrors] = useState({});
   const [fpStatus, setFpStatus] = useState({ type: "", message: "" });
 
@@ -187,7 +258,7 @@ const Login = () => {
                   />
                   <FieldError message={errors.email} />
                 </div>
-                
+
 
                 <div className="mb-2">
                   <label className="form-label poppins-regular">Password</label>
@@ -204,7 +275,7 @@ const Login = () => {
 
                 <div className="text-end mb-3">
                   <button
-                    className="btn text-color text-decoration-none p-0 poppins-light"
+                    className="btn text-color text-decoration-none p-0 poppins-light border-0"
                     onClick={() => setShowForgot(true)}
                   >
                     Forgot password?
@@ -213,9 +284,14 @@ const Login = () => {
 
                 <button className="btn w-100 py-2 poppins-semibold text-white" style={{
                   backgroundColor: "#399C41",
-                }}  onClick={handleLogin}
-                disabled={loading}>
-                  Login
+                }} onClick={handleLogin}
+                  disabled={loading}>
+
+                  {loading ? (
+                    <span className="spinner-border spinner-border-sm ms-2"></span>
+                  ) : (
+                    "Login"
+                  )}
                 </button>
               </div>
             </div>
@@ -235,7 +311,10 @@ const Login = () => {
           {/* BLUR OVERLAY */}
           <div
             className="blur-overlay"
-            onClick={() => setShowForgot(false)}
+            onClick={() => {
+              setShowForgot(false);
+              setFpStep(1);
+            }}
           ></div>
 
           {/* MODAL */}
@@ -243,38 +322,194 @@ const Login = () => {
             <div className="modal-dialog modal-dialog-centered modal-lg">
               <div className="modal-content rounded-4 border-0 shadow-lg">
                 <div className="modal-header border-0">
-                  <h4 className="modal-title poppins-bold text-color">Forgot Password</h4>
+                  <h4 className="modal-title poppins-bold text-color">
+                    Forgot Password
+                  </h4>
                   <button
                     type="button"
                     className="btn-close"
-                    onClick={() => setShowForgot(false)}
+                    onClick={() => {
+                      setShowForgot(false);
+                      setFpStep(1);
+                    }}
                   ></button>
                 </div>
 
                 <div className="modal-body">
-                  <div className="mb-4">
-                    <label className="form-label poppins-regular">Email</label>
-                    <input
-                      type="email"
-                      className="form-control shadow-none poppins-light"
-                      placeholder="Enter your email"
-                    />
-                  </div>
 
-                  <button
-                    className="btn w-100 py-2 text-white poppins-semibold"
-                    style={{
-                      backgroundColor: "#399C41"
-                    }}
-                  >
-                    Send OTP
-                  </button>
+                  {/* ===== STEP 1 & 2 : EMAIL + OTP ===== */}
+                  {fpStep !== 3 && (
+                    <>
+                      {/* EMAIL */}
+                      <div className="mb-4">
+                        <label className="form-label poppins-regular">Email</label>
+                        <input
+                          type="email"
+                          className={`form-control shadow-none poppins-light ${fpErrors.email ? "is-invalid" : ""}`}
+                          placeholder="Enter your email"
+                          value={fpForm.email}
+                          onChange={(e) =>
+                            setFpForm({ ...fpForm, email: e.target.value })
+                          }
+                          disabled={fpStep === 2}
+                        />
+                        <span className="ap-error">{fpErrors.email}</span>
+                      </div>
+
+                      {/* SEND OTP BUTTON */}
+                      {fpStep === 1 && (
+                        <button
+                          className="btn w-100 py-2 text-white poppins-semibold"
+                          style={{ backgroundColor: "#399C41" }}
+                          onClick={() => {
+                            sendotpfunc()
+                          }}
+                        >
+                          Send OTP
+                        </button>
+                      )}
+
+                      {/* ===== OTP SECTION (appears BELOW) ===== */}
+                      {fpStep === 2 && (
+                        <>
+                          <p className="text-center text-muted poppins-light mt-4">
+                            Enter the OTP sent to your email
+                          </p>
+
+                          <div className="mb-3">
+                            <label className="form-label poppins-regular">OTP</label>
+                            <input
+                              type="text"
+                              maxLength="6"
+                              className={`form-control shadow-none poppins-light ${fpErrors.otp ? "is-invalid" : ""}`}
+                              placeholder="Enter OTP"
+                              value={fpForm.otp}
+                              onChange={(e) =>
+                                setFpForm({ ...fpForm, otp: e.target.value })
+                              }
+                            />
+                            <span className="ap-error">{fpErrors.otp}</span>
+                          </div>
+
+                          <button
+                            className="btn w-100 py-2 text-white poppins-semibold"
+                            style={{ backgroundColor: "#399C41" }}
+                            onClick={() => {
+                              verifyotp()
+                            }}
+                          >
+                            Verify OTP
+                          </button>
+
+                          {/* <small className="text-success d-block mt-3 text-center">
+            OTP sent to your email
+          </small> */}
+                        </>
+                      )}
+                    </>
+                  )}
+
+                  {/* ===== STEP 3 : NEW POPUP (RESET PASSWORD) ===== */}
+                  {fpStep === 3 && (
+                    <>
+                      <p className="text-center text-muted poppins-light mb-4">
+                        Create a new password
+                      </p>
+
+                      <div className="mb-3">
+                        <label className="form-label poppins-regular">
+                          New Password
+                        </label>
+                        <input
+                          type="password"
+                          className={`form-control shadow-none poppins-light ${fpErrors.newPassword ? "is-invalid" : ""}`}
+                          placeholder="Enter new password"
+                          value={fpForm.newPassword}
+                          onChange={(e) =>
+                            setFpForm({ ...fpForm, newPassword: e.target.value })
+                          }
+                        />
+                      </div>
+
+                      <div className="mb-4">
+                        <label className="form-label poppins-regular">
+                          Confirm Password
+                        </label>
+                        <input
+                          type="password"
+                          className={`form-control shadow-none poppins-light ${fpErrors.confirmNewPassword ? "is-invalid" : ""}`}
+                          placeholder="Confirm password"
+                          value={fpForm.confirmNewPassword}
+                          onChange={(e) =>
+                            setFpForm({ ...fpForm, confirmNewPassword: e.target.value })
+                          }
+                        />
+                        <span className="ap-error">
+                          {fpErrors.confirmNewPassword}
+                        </span>
+                      </div>
+
+                      <button
+                        className="btn w-100 py-2 text-white poppins-semibold"
+                        style={{ backgroundColor: "#399C41" }}
+                        onClick={async () => {
+                          if (!validateFpStep3()) return;
+
+                          try {
+                            const res = await newPassword({
+                              resetToken: fpForm.resetToken,
+                              newPassword: fpForm.newPassword,
+                              confirmNewPassword: fpForm.confirmNewPassword,
+                            }).unwrap();
+
+                            setFpStatus({
+                              type: "success",
+                              message: res?.message || "Password updated",
+                            });
+
+                            // Close after success
+                            setTimeout(() => {
+                              setShowForgot(false);
+                              setFpStep(1);
+                              setFpForm({
+                                email: "",
+                                otp: "",
+                                otpRequestId: "",
+                                resetToken: "",
+                                newPassword: "",
+                                confirmNewPassword: "",
+                              });
+                            }, 1200);
+                          } catch (err) {
+                            setFpStatus({
+                              type: "error",
+                              message:
+                                err?.data?.message || "Failed to update password",
+                            });
+                          }
+                        }}
+                      >
+                        Submit
+                      </button>
+                    </>
+                  )}
+                  {fpStatus.message && (
+                    <p
+                      className={`mt-2 ${fpStatus.type === "success" ? "text-success" : "text-danger"
+                        }`}
+                    >
+                      {fpStatus.message}
+                    </p>
+                  )}
+
                 </div>
+
               </div>
             </div>
           </div>
         </>
       )}
+
 
     </div>
   );

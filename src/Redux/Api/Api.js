@@ -41,11 +41,50 @@ export const api = createApi({
         body: payload,
       }),
     }), 
+
+    // Auth: reset password
+    resetPassword: builder.mutation({
+      query: (payload) => ({
+        url: URL.PASSWORD_RESET,
+        method: "POST",
+        body: payload,
+      }),
+    }),
+
+    forgotPassword: builder.mutation({
+      query: (payload) => ({
+        url: URL.PASSWORD_FORGOT,
+        method: "POST",
+        body: payload,
+      }),
+    }),
+
+    otpPassword: builder.mutation({
+      query: (payload) => ({
+        url: URL.PASSWORD_OTP,
+        method: "POST",
+        body: payload,
+      }),
+    }),
+
+    newPassword: builder.mutation({
+      query: (payload) => ({
+        url: URL.PASSWORD_NEW,
+        method: "POST",
+        body: payload,
+      }),
+    }),
   }),
 });
 
+
+
 export const {
   useLoginMutation,
+  useResetPasswordMutation,
+  useForgotPasswordMutation,
+  useOtpPasswordMutation,
+  useNewPasswordMutation,
   
 } = api;
 
