@@ -13,31 +13,43 @@ import Login from './Components/Login.jsx'
 import Menu from './Components/Menu.jsx'
 import Notification from './Components/Notification.jsx'
 import Banner from './Components/Banner.jsx'
+import useToken from './Redux/Local/userToken.js'
 
 
 const routes = () => {
-  return (
-    <BrowserRouter>
-        <Routes>
-           
-         <Route path="/" element={<Login />} />
 
+  const { token } = useToken();
+
+  console.log("token", token);
+
+  return (
+
+
+    <Routes>
+      {!token ? (
+        <Route path="/" element={<Login />} />
+      ) : (
         <Route element={<Layout />}>
           <Route path='/dash' element={<Dash />} />
+          <Route path='/' element={<Dash />} />
           <Route path="/user" element={<User />} />
           <Route path="/user/:id" element={<UserDetails />} />
           <Route path="/operatorsetting" element={<Operatorsetting />} />
-           <Route path="/frequent" element={<Support />} />
+          <Route path="/frequent" element={<Support />} />
           <Route path="/support" element={<SupportUser />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/menu" element={<Menu />} />
           <Route path="/banner" element={<Banner />} />
           <Route path="/notification" element={<Notification />} />
-          <Route path="/transaction" element={<Transaction/>}/>
+          <Route path="/transaction" element={<Transaction />} />
         </Route>
-          
-        </Routes>
-    </BrowserRouter>
+      )}
+
+
+
+
+    </Routes>
+
   )
 }
 
