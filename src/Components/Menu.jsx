@@ -265,8 +265,18 @@ const Menu = () => {
                                             className="form-control poppins-regular"
                                             value={menuName}
                                             onChange={e => setMenuName(e.target.value)}
+
                                         />
+                                        {/* Image update */}
+                                        <div>
+                                            <input
+                                                type="file"
+                                                className="form-control poppins-regular mt-3"
+                                                onChange={e => setMenuIcon(e.target.files[0])}
+                                            />
+                                        </div>
                                     </div>
+
 
                                     <div className="modal-footer">
                                         <button className="btn btn-secondary poppins-semibold" onClick={() => setShowEdit(false)}>
