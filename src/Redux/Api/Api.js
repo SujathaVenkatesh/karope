@@ -40,7 +40,7 @@ export const api = createApi({
         method: "POST",
         body: payload,
       }),
-    }), 
+    }),
 
     // Auth: reset password
     resetPassword: builder.mutation({
@@ -67,6 +67,8 @@ export const api = createApi({
       }),
     }),
 
+    // logout
+
     logout: builder.mutation({
       query: (payload) => ({
         url: URL.LOGOUT,
@@ -74,22 +76,87 @@ export const api = createApi({
         body: payload,
       }),
     }),
-    
-    
-   
+
+    // menu
+
+    menulistget: builder.query({
+      query: () => ({
+        url: URL.FEATURES,
+        method: "GET",
+      }),
+    }),
+
+    menupostupdate: builder.mutation({
+      query: (payload) => ({
+        url: URL.FEATURES,
+        method: "POST", 
+        body: payload,
+      }),
+    }),
+
+    menudetailview: builder.query({
+      query: (id) => ({
+        url: URL.FEATURES / { id },
+        method: "GET",
+      }),
+    }),
+
+    menupdate: builder.mutation({
+      query: ({ id, payload }) => ({
+        url: `${URL.FEATURES}/${id}`,
+        method: "PUT", // or PUT / PATCH depending on API
+        body: payload,
+      }),
+    }),
+
+    menudelete: builder.mutation({
+      query: ({ id }) => ({
+        url: `${URL.FEATURES}/${id}`,
+        method: "DELETE", // or PUT / PATCH depending on API
+
+      }),
+    }),
+
+    menuactive: builder.mutation({
+      query: ({ id }) => ({
+        url: `${URL.FEATURES}/${id}/activate`,
+        method: "PATCH", // or PUT / PATCH depending on API
+
+      }),
+    }),
+
+    menudeactive: builder.mutation({
+      query: ({ id }) => ({
+        url: `${URL.FEATURES}/${id}/deactivate`,
+        method: "PATCH", // or PUT / PATCH depending on API
+
+      }),
+    }),
+
+
+
   }),
 });
 
 
 
 export const {
+  // login
   useLoginMutation,
   useResetPasswordMutation,
   useForgotPasswordMutation,
   useOtpPasswordMutation,
-  
+  // logout
   useLogoutMutation,
- 
-  
+  // menu
+  useMenulistgetQuery,//get
+  useMenudetailviewQuery,
+  useMenuactiveMutation,
+  useMenudeactiveMutation,
+  useMenudeleteMutation,
+  useMenupdateMutation,
+  useMenupostupdateMutation
+
+
 } = api;
 

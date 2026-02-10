@@ -1,10 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
     FaMobileAlt, FaBolt, FaPlane, FaFilm, FaBus, FaWallet,
-    FaExchangeAlt, FaPhoneAlt, FaWifi, FaFire, FaFileInvoice, FaThLarge
+    FaExchangeAlt, FaPhoneAlt, FaWifi, FaFire,
+    FaFileInvoice, FaThLarge
 } from "react-icons/fa";
-import { MdEdit } from "react-icons/md";
-import { MdDelete } from "react-icons/md";
+import { MdEdit, MdDelete } from "react-icons/md";
+
+import {
+    useMenulistgetQuery,
+    useMenudetailviewQuery,
+    useMenupdateMutation,
+    useMenudeleteMutation,
+    useMenuactiveMutation,
+    useMenudeactiveMutation,
+    useMenupostupdateMutation
+} from "../Redux/Api/Api";
+
 
 const defaultIcons = {
     Recharge: <FaMobileAlt size={22} color="#399c41" />,
@@ -18,101 +29,171 @@ const defaultIcons = {
     Broadband: <FaWifi size={22} color="#399c41" />,
     Gas: <FaFire size={22} color="#399c41" />,
     Bills: <FaFileInvoice size={22} color="#399c41" />,
-    More: <FaThLarge size={22} color="#399c41" />
+    More: <FaThLarge size={22} color="#399c41" />,
 };
 
-export default function Menu() {
+const Menu = () => {
+    /* API */
+    const { data, refetch } = useMenulistgetQuery();
+    const [menupdate] = useMenupdateMutation();
+    const [menudelete] = useMenudeleteMutation();
+    const [menuactive] = useMenuactiveMutation();
+    const [menudeactive] = useMenudeactiveMutation();
+    const [menupostupdate] = useMenupostupdateMutation();
 
-    const initial = [
-        "Recharge", "Electricity", "Flight", "Movie", "Bus", "Payments",
-        "Transfer", "Landline", "Broadband", "Gas", "Bills", "More"
-    ].map((x, i) => ({
-        id: i,
-        name: x,
-        active: ["Recharge", "Flight", "Movie", "Bus", "Payments", "Broadband", "Gas", "Bills", "More"].includes(x),
-        soon: x !== "Recharge",
-        icon: null
-    }));
-
-    const [menus, setMenus] = useState(initial);
-    const [show, setShow] = useState(false);
-    const [selected, setSelected] = useState(null);
-
+    /* State */
+    const [menus, setMenus] = useState([]);
     const [menuName, setMenuName] = useState("");
     const [menuIcon, setMenuIcon] = useState(null);
     const [status, setStatus] = useState(true);
 
-    const toggle = id => setMenus(m => m.map(x => x.id === id ? { ...x, active: !x.active } : x));
-    const openDelete = item => { setSelected(item); setShow(true) };
-    const confirmDelete = () => { setMenus(m => m.filter(x => x.id !== selected.id)); setShow(false) };
+    const [editId, setEditId] = useState(null);
+    const [showEdit, setShowEdit] = useState(false);
+    const [showDelete, setShowDelete] = useState(false);
+    const [selected, setSelected] = useState(null);
 
-    const handleAdd = () => {
+    const fileInputRef = useRef(null);
+
+
+    /* Load menu list */
+    useEffect(() => {
+        if (data?.length) {
+            setMenus(
+                data.map(item => ({
+                    id: item.id,
+                    name: item.name,
+                    active: item.is_active === true ||
+                        item.is_active === 1 ||
+                        item.is_active === "true" ||
+                        item.status === true ||
+                        item.status === 1 ||
+                        item.status === "true",
+                    icon: item.image_url
+                        ? `http://localhost:3000${item.image_url}`
+                        : null,
+                }))
+            );
+        }
+    }, [data]);
+
+    /* ADD */
+    const handleAdd = async () => {
+        if (!menuName) return alert("Enter menu name");
+        if (!menuIcon) return alert("Menu Icon is required");
+
+        const formData = new FormData();
+        formData.append("name", menuName);
+        formData.append("status", status);
+        if (menuIcon) formData.append("image", menuIcon);
+
+        await menupostupdate(formData).unwrap();
+        resetForm();
+        refetch();
+    };
+
+    /* UPDATE */
+    const handleUpdate = async () => {
         if (!menuName) return alert("Enter menu name");
 
-        setMenus(m => [
-            ...m,
-            {
-                id: Date.now(), name: menuName, active: status, soon: false,
-                icon: menuIcon ? URL.createObjectURL(menuIcon) : null
-            }
-        ]);
+        const formData = new FormData();
+        formData.append("name", menuName);
+        formData.append("status", status);
+        if (menuIcon) formData.append("image", menuIcon);
 
+        await menupdate({ id: editId, payload: formData }).unwrap();
+        setShowEdit(false);
+        resetForm();
+        refetch();
+    };
+
+    /* TOGGLE */
+    const toggle = async m => {
+        if (m.active) {
+            await menudeactive({ id: m.id }).unwrap();
+        } else {
+            await menuactive({ id: m.id }).unwrap();
+        }
+        refetch();
+    };
+
+    const resetForm = () => {
         setMenuName("");
         setMenuIcon(null);
+        setStatus(true);
+        setEditId(null);
+
+        if (fileInputRef.current) {
+            fileInputRef.current.value = "";
+        }
     };
 
     return (
         <div className="container-fluid">
 
+            {/* Header */}
             <div className="mb-4">
                 <h4 className="poppins-bold text-color">Add Menu</h4>
-                <p className="poppins-regular text-muted mb-0">
-                    Configure and Toggle Platform Services for End-Users
-                </p>
+                <p className="poppins-regular text-muted mb-0"> Configure and Toggle Platform Services for End-Users </p>
             </div>
 
+            {/* ADD FORM */}
+
             <div className="card shadow-sm mb-4">
-                <div className="card-body">
-                    <div className="row g-3 align-items-end ">
+                <div className="card-body row g-3 align-items-end">
 
-                        <div className="col-md-4">
-                            <label className="poppins-regular mb-2">Menu Name</label>
-                            <input className="form-control poppins-regular"
-                                value={menuName}
-                                placeholder="Name"
-                                onChange={e => setMenuName(e.target.value)} />
-                        </div>
-
-                        <div className="col-md-4">
-                            <label className="poppins-regular mb-2">Icon</label>
-                            <input type="file" className="form-control poppins-regular text-muted"
-                                onChange={e => setMenuIcon(e.target.files[0])} />
-                        </div>
-
-                        <div className="col-md-3">
-                            <label className="poppins-regular mb-2">Status</label>
-                            <div className="btn-group w-100">
-                                <button onClick={() => setStatus(true)}
-                                    className="btn text-white poppins-semibold"
-                                    style={{ background: status ? "#399c41" : "#ccc" }}>Active</button>
-
-                                <button onClick={() => setStatus(false)}
-                                    className="btn text-white poppins-semibold"
-                                    style={{ background: !status ? "#399c41" : "#ccc" }}>Inactive</button>
-                            </div>
-                        </div>
-
-                        <div className="col-md-1">
-                            <button className="btn text-white w-100 poppins-semibold"
-                                style={{ background: "#399c41" }}
-                                onClick={handleAdd}>+ Add</button>
-                        </div>
-
+                    <div className="col-md-4 poppins-regular ">
+                        <label>Menu Name</label>
+                        <input
+                            className="form-control mt-2"
+                            value={menuName}
+                            onChange={e => setMenuName(e.target.value)}
+                        />
                     </div>
+
+                    <div className="col-md-4 poppins-regular">
+                        <label>Icon</label>
+                        <input
+                            ref={fileInputRef}
+                            type="file"
+                            className="form-control mt-2 "
+                            onChange={e => setMenuIcon(e.target.files[0])}
+                        />
+                    </div>
+
+                    <div className="col-md-3 poppins-regular">
+                        <label>Status</label>
+                        <div className="btn-group w-100 mt-2 ">
+                            <button
+                                className="btn text-white poppins-semibold"
+                                style={{ background: status ? "#399c41" : "#ccc" }}
+                                onClick={() => setStatus(true)}
+                            >
+                                Active
+                            </button>
+                            <button
+                                className="btn text-white poppins-semibold"
+                                style={{ background: !status ? "#399c41" : "#ccc" }}
+                                onClick={() => setStatus(false)}
+                            >
+                                Inactive
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="col-md-1">
+                        <button
+                            className="btn text-white w-100 poppins-semibold"
+                            style={{ background: "#399c41" }}
+                            onClick={handleAdd}
+                        >
+                            + Add
+                        </button>
+                    </div>
+
                 </div>
             </div>
 
-
+            {/* MENU LIST */}
             <div className="card shadow-sm bg-white mt-5">
                 <div className="card-body">
                     <div className="row g-3">
@@ -120,75 +201,131 @@ export default function Menu() {
 
                         {menus.map(m => (
                             <div key={m.id} className="col-xl-2 col-md-3 col-sm-4">
-
-                                <div className="card text-center h-100"
-                                    style={{ background: "#eaf6ea", border: "1px solid #399c41" }}>
-
+                                <div
+                                    className="card text-center h-100"
+                                    style={{ background: "#eaf6ea", border: "1px solid #399c41" }}
+                                >
                                     <div className="card-body">
 
                                         <div className="d-flex justify-content-between">
-                                            <MdDelete size={18} className="text-muted" onClick={() => openDelete(m)} />
-                                            {m.soon && <span className="badge bg-light text-danger border border-danger poppins-medium">SOON</span>}
-                                            <MdEdit size={18} className="text-muted" onClick={() => openEdit(m)} />
+                                            <MdDelete
+                                                onClick={() => { setSelected(m); setShowDelete(true); }}
+                                            />
+                                            <MdEdit
+                                                onClick={() => {
+                                                    setEditId(m.id);
+                                                    setMenuName(m.name);
+                                                    setStatus(m.active);
+                                                    setMenuIcon(null);
+                                                    setShowEdit(true);
+                                                }}
+                                            />
                                         </div>
 
-                                        <div className="rounded-circle mx-auto my-2 d-flex align-items-center justify-content-center"
-                                            style={{ width: 48, height: 48, background: "#fff", border: "1px solid #399c41" }}>
-
-                                            {m.icon ? <img src={m.icon} width="22" /> : defaultIcons[m.name]}
-
+                                        <div className="my-2">
+                                            {m.icon
+                                                ? <img src={m.icon} width="22" alt={m.name} />
+                                                : defaultIcons[m.name] || <FaThLarge />}
                                         </div>
 
                                         <b className="poppins-semibold">{m.name}</b>
 
-                                        <div className={`poppins-regular ${m.active ? "text-color" : "text-muted"}`}>
-                                            {m.active ? "Active" : "Inactive"}
-                                        </div>
-
+                                        {/* TOGGLE */}
                                         <div className="form-check form-switch d-flex justify-content-center mt-2">
-                                            <input className="form-check-input"
+                                            <input
+                                                className="form-check-input"
                                                 type="checkbox"
                                                 checked={m.active}
-                                                onChange={() => toggle(m.id)}
-                                                style={{ backgroundColor: m.active ? "#399c41" : "#ccc" }} />
+                                                onChange={() => toggle(m)}
+
+                                                style={{
+                                                    backgroundColor: m.active ? "#399c41" : "#ccc"
+                                                }}
+                                            />
                                         </div>
 
                                     </div>
                                 </div>
-
-
-
                             </div>
                         ))}
-
                     </div>
+
+                    {/* EDIT MODAL */}
+                    {showEdit && (
+                        <div className="modal fade show d-block" style={{ background: "rgba(0, 0, 0, 0.6)" }}>
+                            <div className="modal-dialog modal-dialog-centered">
+                                <div className="modal-content">
+                                    <div className="modal-header text-white" style={{ backgroundColor: "#399c41" }}>
+                                        <h5 className="poppins-bold">Edit Menu</h5>
+                                        <button className="btn-close" onClick={() => setShowEdit(false)} />
+                                    </div>
+
+                                    <div className="modal-body">
+                                        <input
+                                            className="form-control poppins-regular"
+                                            value={menuName}
+                                            onChange={e => setMenuName(e.target.value)}
+                                        />
+                                    </div>
+
+                                    <div className="modal-footer">
+                                        <button className="btn btn-secondary poppins-semibold" onClick={() => setShowEdit(false)}>
+                                            Cancel
+                                        </button>
+                                        <button className="btn text-white poppins-semibold" onClick={handleUpdate} style={{ backgroundColor: "#399c41" }}>
+                                            Save
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* DELETE MODAL */}
+                    {showDelete && (
+                        <div className="modal fade show d-block" style={{ background: "rgba(0, 0, 0, 0.6)" }}>
+                            <div className="modal-dialog modal-dialog-centered ">
+                                <div className="modal-content">
+                                    <div className="modal-header bg-danger text-white">
+                                        <h5 className="poppins-bold">Delete Menu</h5>
+
+                                        <button className="btn-close" onClick={() => setShowDelete(false)} />
+                                    </div>
+
+                                    <div className="modal-body poppins-regular">
+                                        Are you sure you want to delete?
+                                    </div>
+
+                                    <div className="modal-footer">
+
+
+                                        <button className="btn btn-secondary poppins-semibold" onClick={() => setShowDelete(false)}>
+                                            Cancel
+                                        </button>
+                                        <button
+                                            className="btn btn-danger poppins-semibold"
+                                            onClick={async () => {
+                                                await menudelete({ id: selected.id }).unwrap();
+                                                setShowDelete(false);
+                                                refetch();
+                                            }}
+                                        >
+                                            Delete
+                                        </button>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    )}
+
                 </div>
             </div>
-
-            {show && (
-                <div className="modal fade show d-block" style={{ background: "rgba(0,0,0,.4)" }}>
-                    <div className="modal-dialog modal-dialog-centered">
-                        <div className="modal-content">
-
-                            <div className="modal-header">
-                                <h5 className="poppins-bold">Delete Menu</h5>
-                                <button className="btn-close" onClick={() => setShow(false)}></button>
-                            </div>
-
-                            <div className="modal-body poppins-regular">
-                                Delete <b>{selected?.name}</b> ?
-                            </div>
-
-                            <div className="modal-footer">
-                                <button className="btn btn-secondary poppins-medium" onClick={() => setShow(false)}>Cancel</button>
-                                <button className="btn text-white poppins-semibold" style={{ background: "#399c41" }} onClick={confirmDelete}>Delete</button>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            )}
-
         </div>
     );
-}
+};
+
+export default Menu;
+
+
