@@ -210,87 +210,99 @@ const Banner = () => {
 
 
 {/* EDIT MODAL */}
-<div
-  className={`modal fade ${showEdit ? "show d-block" : ""}`}
-  tabIndex="-1"
->
-  <div className="modal-dialog modal-dialog-centered">
-    <div className="modal-content">
+{showEdit && selectedBanner && (
+  <>
+    <div
+      className="modal fade show d-block"
+      tabIndex="-1"
+    >
+      <div className="modal-dialog modal-dialog-centered">
+        <div className="modal-content">
 
-      {/* HEADER */}
-      <div className="modal-header text-white" style={{ backgroundColor: "#399c41" }}>
-        <h5 className="modal-title poppins-bold">Edit Banner</h5>
-        <button
-          type="button"
-          className="btn-close btn-close-white"
-          onClick={() => setShowEdit(false)}
-        ></button>
-      </div>
+          {/* HEADER */}
+          <div
+            className="modal-header text-white"
+            style={{ backgroundColor: "#399c41" }}
+          >
+            <h5 className="modal-title poppins-bold">Edit Banner</h5>
+            <button
+              type="button"
+              className="btn-close btn-close-white"
+              onClick={() => setShowEdit(false)}
+            ></button>
+          </div>
 
-      {/* BODY */}
-      <div className="modal-body">
-        <div className="mb-3">
-          <label className="form-label poppins-regular">Title</label>
-          <input
-            className="form-control"
-            value={selectedBanner.title}
-            onChange={(e) =>
-              setSelectedBanner({
-                ...selectedBanner,
-                title: e.target.value,
-              })
-            }
-          />
+          {/* BODY */}
+          <div className="modal-body">
+            <div className="mb-3">
+              <label className="form-label poppins-regular">Title</label>
+              <input
+                className="form-control"
+                value={selectedBanner.title}
+                onChange={(e) =>
+                  setSelectedBanner({
+                    ...selectedBanner,
+                    title: e.target.value,
+                  })
+                }
+              />
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label poppins-regular">Description</label>
+              <input
+                className="form-control"
+                value={selectedBanner.description}
+                onChange={(e) =>
+                  setSelectedBanner({
+                    ...selectedBanner,
+                    description: e.target.value,
+                  })
+                }
+              />
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label poppins-regular">Image</label>
+              <input
+                type="file"
+                className="form-control"
+                onChange={(e) =>
+                  setSelectedBanner({
+                    ...selectedBanner,
+                    newImage: e.target.files[0],
+                  })
+                }
+              />
+            </div>
+          </div>
+
+          {/* FOOTER */}
+          <div className="modal-footer">
+            <button
+              className="btn btn-secondary poppins-semibold"
+              onClick={() => setShowEdit(false)}
+            >
+              Cancel
+            </button>
+            <button
+              className="btn text-white poppins-semibold"
+              onClick={confirmEdit}
+              style={{ backgroundColor: "#399c41" }}
+            >
+              Save
+            </button>
+          </div>
+
         </div>
-
-        <div className="mb-3">
-          <label className="form-label poppins-regular">Description</label>
-          <input
-            className="form-control"
-            value={selectedBanner.description}
-            onChange={(e) =>
-              setSelectedBanner({
-                ...selectedBanner,
-                description: e.target.value,
-              })
-            }
-          />
-        </div>
-
-        <div className="mb-3">
-          <label className="form-label poppins-regular">Image</label>
-          <input
-            type="file"
-            className="form-control"
-            onChange={(e) =>
-              setSelectedBanner({
-                ...selectedBanner,
-                newImage: e.target.files[0],
-              })
-            }
-          />
-        </div>
       </div>
-
-      {/* FOOTER */}
-      <div className="modal-footer">
-        <button
-          className="btn btn-secondary poppins-semibold"
-          onClick={() => setShowEdit(false)}
-        >
-          Cancel
-        </button>
-        <button className="btn text-white poppins-semibold" onClick={confirmEdit}style={{ backgroundColor: "#399c41" }}>
-          Save
-        </button>
-      </div>
-
     </div>
-  </div>
-</div>
 
-{/* BACKDROP */}
-{showEdit && <div className="modal-backdrop fade show"></div>}
+    {/* BACKDROP */}
+    <div className="modal-backdrop fade show"></div>
+  </>
+)}
+
 
     </div>
   );
