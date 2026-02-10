@@ -132,6 +132,44 @@ export const api = createApi({
 
       }),
     }),
+      // banner
+    banner: builder.query({
+      query: () => ({
+        url: URL.BANNER,
+        method: "GET",
+      }),
+    }),
+
+    bannerupdate: builder.mutation({
+      query: ({ id, payload }) => ({
+        url: `${URL.BANNER}/${id}`,
+        method: "PUT", // or PUT / PATCH depending on API
+        body: payload,
+      }),
+    }),
+
+    bannerdelete: builder.mutation({
+      query: ({ id }) => ({
+        url: `${URL.BANNER}/${id}`,
+        method: "DELETE", // or PUT / PATCH depending on API
+
+      }),
+    }),
+
+     bannerpostupdate: builder.mutation({
+      query: (payload) => ({
+        url: URL.BANNER,
+        method: "POST", 
+        body: payload,
+      }),
+    }),
+
+      banneractive: builder.query({
+        query: ({ id }) => ({
+        url: `${URL.BANNER}/${id}`,
+        method: "GET",
+        }),
+      }),
 
 
 
@@ -155,7 +193,14 @@ export const {
   useMenudeactiveMutation,
   useMenudeleteMutation,
   useMenupdateMutation,
-  useMenupostupdateMutation
+  useMenupostupdateMutation,
+  // Banner
+  useBannerQuery,
+  useBannerupdateMutation,
+  useBannerdeleteMutation,
+  useBannerpostupdateMutation,
+  useBanneractiveQuery,
+
 
 
 } = api;

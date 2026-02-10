@@ -7,7 +7,8 @@ export const URL = {
   PASSWORD_OTP: 'auth/admin/verify-otp',
   LOGOUT: 'auth/admin/logout',
   PASSWORD_RESET: 'auth/admin/reset-password',
-  FEATURES: 'features'
+  FEATURES: 'features',
+  BANNER: 'banners',
  
   
  
