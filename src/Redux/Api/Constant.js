@@ -10,6 +10,10 @@ export const URL = {
   FEATURES: 'features',
   BANNER: 'banners',
   NOTIFICATION: 'admin/notifications/send',
+  // NOTIFICATION_SENT: 'admin/notifications/sent',
+  // NOTIFICATION_DETAILS: 'admin/notifications',
+  CASHBACK: 'admin/cashback/slab',
+  CASHBACK_LIST: 'admin/cashback/slabs',
  
   
  

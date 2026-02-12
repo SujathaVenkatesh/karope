@@ -180,7 +180,57 @@ export const api = createApi({
         method: "POST", 
         body: body,
       }),
+      invalidatesTags: ["Notifications"],
     }),
+
+    // notificationsent: builder.query ({
+    //   query: () => ({
+    //     url: URL.NOTIFICATION_SENT,
+    //     method: "GET"
+    //   }),
+    //   providesTags: ["Notifications"],
+    // }),
+
+
+    // notificationdetails: builder.query ({
+    //   query: (id) => ({
+    //     url: `${URL.NOTIFICATION_DETAILS}/${id}`,
+    //     method: "GET"
+    //   }),
+    // }),
+
+    // cashback
+
+    cashpost: builder.mutation ({
+      query: (body) => ({
+        url: URL.CASHBACK,
+        method: "POST",
+        body: body,
+
+      }),
+    }),
+
+    cashupdate: builder.mutation({
+      query: ({id, body}) => ({
+        url: `${URL.CASHBACK}/${id}`,
+        method: "PUT",
+        body: body,
+      }),
+    }),
+
+    cashdelete: builder.mutation({
+      query: ({id, body}) => ({
+        url: `${URL.CASHBACK}/${id}`,
+        method: "DELETE",
+      }),
+    }),
+
+    cashlist: builder.query ({
+      query: () => ({
+        url: URL.CASHBACK_LIST,
+        method: "GET",
+      })
+    })
 
 
 
@@ -214,7 +264,14 @@ export const {
   useBannerpostupdateMutation,
   useBanneractiveQuery,
   // notification
-  useNotificationsendMutation
+  useNotificationsendMutation,
+  useNotificationdetailsQuery,
+  useNotificationsentQuery,
+  // cashback
+  useCashpostMutation,
+  useCashdeleteMutation,
+  useCashlistQuery,
+  useCashupdateMutation,
 
 
 
