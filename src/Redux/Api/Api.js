@@ -132,6 +132,7 @@ export const api = createApi({
 
       }),
     }),
+
       // banner
     banner: builder.query({
       query: () => ({
@@ -171,6 +172,18 @@ export const api = createApi({
         }),
       }),
 
+      // notification
+
+      notificationsend: builder.mutation({
+      query: (body) => ({
+        url: URL.NOTIFICATION,
+        method: "POST", 
+        body: body,
+      }),
+    }),
+
+
+
 
 
   }),
@@ -200,6 +213,8 @@ export const {
   useBannerdeleteMutation,
   useBannerpostupdateMutation,
   useBanneractiveQuery,
+  // notification
+  useNotificationsendMutation
 
 
 

@@ -9,6 +9,7 @@ export const URL = {
   PASSWORD_RESET: 'auth/admin/reset-password',
   FEATURES: 'features',
   BANNER: 'banners',
+  NOTIFICATION: 'admin/notifications/send',
  
   
  
