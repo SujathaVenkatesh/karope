@@ -1,5 +1,6 @@
 
 export const BASE_URL = 'http://localhost:3000/api/';
+// export const BASE_URL = 'https://karope-backend.onrender.com/api/';
 
 export const URL = {
   LOGIN: 'admin/login', 
@@ -10,8 +11,9 @@ export const URL = {
   FEATURES: 'features',
   BANNER: 'banners',
   NOTIFICATION: 'admin/notifications/send',
-  // NOTIFICATION_SENT: 'admin/notifications/sent',
-  // NOTIFICATION_DETAILS: 'admin/notifications',
+  NOTIFICATION_SENT: 'admin/notifications/sent',
+  NOTIFICATION_DETAILS: 'admin/notifications',
+  USER_LIST: 'user/list',
   CASHBACK: 'admin/cashback/slab',
   CASHBACK_LIST: 'admin/cashback/slabs',
  

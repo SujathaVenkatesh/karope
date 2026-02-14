@@ -183,21 +183,30 @@ export const api = createApi({
       invalidatesTags: ["Notifications"],
     }),
 
-    // notificationsent: builder.query ({
-    //   query: () => ({
-    //     url: URL.NOTIFICATION_SENT,
-    //     method: "GET"
-    //   }),
-    //   providesTags: ["Notifications"],
-    // }),
+    notificationsent: builder.query ({
+      query: ({page=1, limit=10}) => ({
+        url: `${URL.NOTIFICATION_SENT}?page=${page}&limit=${limit}`,
+        method: "GET"
+      }),
+      providesTags: ["Notifications"],
+    }),
 
 
-    // notificationdetails: builder.query ({
-    //   query: (id) => ({
-    //     url: `${URL.NOTIFICATION_DETAILS}/${id}`,
-    //     method: "GET"
-    //   }),
-    // }),
+    notificationdetails: builder.query ({
+      query: (id) => ({
+        url: `${URL.NOTIFICATION_DETAILS}/${id}`,
+        method: "GET"
+      }),
+    }),
+
+    // user list
+
+    userlist: builder.query({
+      query: () => ({
+        url: URL.USER_LIST,
+        method: "GET",
+      }),
+    }),
 
     // cashback
 
@@ -267,6 +276,8 @@ export const {
   useNotificationsendMutation,
   useNotificationdetailsQuery,
   useNotificationsentQuery,
+  // userlist
+  useUserlistQuery,
   // cashback
   useCashpostMutation,
   useCashdeleteMutation,
