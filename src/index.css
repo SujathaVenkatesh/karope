@@ -90,6 +90,13 @@
 .modal {
   z-index: 1055;
 }
+/* support */
 
+.selected-row {
+  background-color: #ffffff !important;
+}
 
+.table tbody tr {
+  background-color: #ffffff;
+}
 

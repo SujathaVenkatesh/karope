@@ -171,6 +171,31 @@ export const api = createApi({
         }),
       }),
 
+      // Support
+      support: builder.query({
+        query: ({status}) => ({
+          url: `${URL.SUPPORT}/tickets?status=${status}`,
+          method: "GET",
+          // params: payload,
+        }),
+      }),
+
+      supportticket: builder.query({
+        query: (id) => ({
+          url: `${URL.SUPPORT}/ticket/${id}`,
+          method: "GET",
+        }),
+      }),
+
+supportreplay: builder.mutation({
+  query: ({ id, message }) => ({
+    url: `${URL.SUPPORT}/ticket/${id}/message`,
+    method: "POST",
+    body: { message },
+  }),
+}),
+
+
 
 
   }),
@@ -200,6 +225,10 @@ export const {
   useBannerdeleteMutation,
   useBannerpostupdateMutation,
   useBanneractiveQuery,
+  // Support
+  useLazySupportQuery,
+  useSupportticketQuery,
+  useSupportreplayMutation,
 
 
 

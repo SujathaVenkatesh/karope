@@ -113,7 +113,7 @@ const Banner = () => {
 
           <div className="d-flex justify-content-end mt-4">
             <button
-              className="btn text-white"
+              className="btn text-white poppins-semibold"
               style={{ background: "#399c41" }}
               onClick={handleAdd}
             >
@@ -196,7 +196,7 @@ const Banner = () => {
         >
           Cancel
         </button>
-        <button className="btn btn-danger poppins-semi-bold" onClick={confirmDelete}>
+        <button className="btn btn-danger poppins-semibold" onClick={confirmDelete}>
           Delete
         </button>
       </div>
