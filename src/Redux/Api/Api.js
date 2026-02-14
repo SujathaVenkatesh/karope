@@ -132,6 +132,7 @@ export const api = createApi({
 
       }),
     }),
+
       // banner
     banner: builder.query({
       query: () => ({
@@ -194,6 +195,75 @@ supportreplay: builder.mutation({
     body: { message },
   }),
 }),
+      // notification
+
+      notificationsend: builder.mutation({
+      query: (body) => ({
+        url: URL.NOTIFICATION,
+        method: "POST", 
+        body: body,
+      }),
+      invalidatesTags: ["Notifications"],
+    }),
+
+    notificationsent: builder.query ({
+      query: ({page=1, limit=10}) => ({
+        url: `${URL.NOTIFICATION_SENT}?page=${page}&limit=${limit}`,
+        method: "GET"
+      }),
+      providesTags: ["Notifications"],
+    }),
+
+
+    notificationdetails: builder.query ({
+      query: (id) => ({
+        url: `${URL.NOTIFICATION_DETAILS}/${id}`,
+        method: "GET"
+      }),
+    }),
+
+    // user list
+
+    userlist: builder.query({
+      query: () => ({
+        url: URL.USER_LIST,
+        method: "GET",
+      }),
+    }),
+
+    // cashback
+
+    cashpost: builder.mutation ({
+      query: (body) => ({
+        url: URL.CASHBACK,
+        method: "POST",
+        body: body,
+
+      }),
+    }),
+
+    cashupdate: builder.mutation({
+      query: ({id, body}) => ({
+        url: `${URL.CASHBACK}/${id}`,
+        method: "PUT",
+        body: body,
+      }),
+    }),
+
+    cashdelete: builder.mutation({
+      query: ({id, body}) => ({
+        url: `${URL.CASHBACK}/${id}`,
+        method: "DELETE",
+      }),
+    }),
+
+    cashlist: builder.query ({
+      query: () => ({
+        url: URL.CASHBACK_LIST,
+        method: "GET",
+      })
+    })
+
 
 
 
@@ -229,6 +299,17 @@ export const {
   useLazySupportQuery,
   useSupportticketQuery,
   useSupportreplayMutation,
+  // notification
+  useNotificationsendMutation,
+  useNotificationdetailsQuery,
+  useNotificationsentQuery,
+  // userlist
+  useUserlistQuery,
+  // cashback
+  useCashpostMutation,
+  useCashdeleteMutation,
+  useCashlistQuery,
+  useCashupdateMutation,
 
 
 

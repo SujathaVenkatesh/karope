@@ -1,9 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import airtel from "../assets/img/airtel.png";
 import jio from "../assets/img/jio.png";
 import vi from "../assets/img/vi.png";
 import bsnl from "../assets/img/bsnl.png";
 import { MdEdit, MdDelete } from "react-icons/md";
+
+import {
+  useCashpostMutation,
+  useCashupdateMutation,
+  useCashdeleteMutation,
+  useCashlistQuery,
+} from "../Redux/Api/Api";
 
 const operators = [
   { name: "Airtel", logo: airtel },
@@ -13,6 +20,11 @@ const operators = [
 ];
 
 const Operatorsetting = () => {
+  const { data, refetch } = useCashlistQuery();
+  const [cashpost] = useCashpostMutation();
+  const [cashupdate] = useCashupdateMutation();
+  const [cashdelete] = useCashdeleteMutation();
+
   const [rules, setRules] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [minAmount, setMinAmount] = useState("");
@@ -20,20 +32,73 @@ const Operatorsetting = () => {
   const [cashback, setCashback] = useState("");
   const [editRowIndex, setEditRowIndex] = useState(null);
 
-  const closeModal = () => {
-    setShowModal(false);
-    setMinAmount("");
-    setMaxAmount("");
-    setCashback("");
-    setEditRowIndex(null);
+  const [showDelete, setShowDelete] = useState(false);
+  const [selected, setSelected] = useState(null);
+
+  /* ================= LOAD DATA ================= */
+  useEffect(() => {
+    if (!data) return;
+
+    const formatted = data.map((item) => ({
+      id: item.id,
+      minAmount: Number(item.min_amount),
+      maxAmount: Number(item.max_amount),
+      cashbackAmount: Number(item.cashback_amount),
+    }));
+
+    setRules(formatted);
+  }, [data]);
+
+  /* ================= ADD ================= */
+  const handleAdd = async () => {
+    try {
+      await cashpost({
+        minAmount: Number(minAmount),
+        maxAmount: Number(maxAmount),
+        cashbackAmount: Number(cashback),
+      }).unwrap();
+
+      setShowModal(false);
+      setMinAmount("");
+      setMaxAmount("");
+      setCashback("");
+      await refetch();
+    } catch (err) {
+      console.error("ADD ERROR:", err);
+    }
   };
 
-  const handleAdd = () => {
-    setRules([
-      ...rules,
-      { minAmount, maxAmount, cashback },
-    ]);
-    closeModal();
+  /* ================= UPDATE ================= */
+  const handleUpdate = async (index) => {
+    try {
+      const rule = rules[index];
+
+      await cashupdate({
+        id: rule.id,
+        body: {
+          minAmount: Number(rule.minAmount),
+          maxAmount: Number(rule.maxAmount),
+          cashbackAmount: Number(rule.cashbackAmount),
+        },
+      }).unwrap();
+
+      setEditRowIndex(null);
+      await refetch();
+    } catch (err) {
+      console.error("UPDATE ERROR:", err);
+    }
+  };
+
+  /* ================= DELETE ================= */
+  const handleDelete = async () => {
+    try {
+      await cashdelete({ id: selected.id }).unwrap();
+      setShowDelete(false);
+      setSelected(null);
+      await refetch();
+    } catch (err) {
+      console.error("DELETE ERROR:", err);
+    }
   };
 
   const updateRule = (index, field, value) => {
@@ -42,14 +107,10 @@ const Operatorsetting = () => {
     setRules(updated);
   };
 
-  const handleDelete = (index) => {
-    setRules(rules.filter((_, i) => i !== index));
-  };
-
   return (
     <div className="container-fluid">
 
-      {/* HEADER + ADD BUTTON */}
+      {/* HEADER */}
       <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
         <div>
           <h4 className="poppins-bold text-color">
@@ -69,7 +130,7 @@ const Operatorsetting = () => {
         </button>
       </div>
 
-      {/* OPERATOR CARDS (DISPLAY ONLY) */}
+      {/* OPERATOR CARDS */}
       <div className="card shadow-sm bg-white mb-4">
         <div className="card-body">
           <h5 className="poppins-bold text-color mb-3">Operators</h5>
@@ -78,13 +139,9 @@ const Operatorsetting = () => {
               <div
                 key={op.name}
                 className="border rounded text-center p-3"
-                style={{
-                  width: "150px",
-                  background: "#f9fff9",
-                }}
+                style={{ width: "150px", background: "#f9fff9" }}
               >
                 <img src={op.logo} width={90} alt={op.name} />
-                {/* <div className="poppins-semibold mt-2">{op.name}</div> */}
               </div>
             ))}
           </div>
@@ -104,7 +161,6 @@ const Operatorsetting = () => {
                 <th>Action</th>
               </tr>
             </thead>
-
             <tbody>
               {rules.length === 0 && (
                 <tr>
@@ -115,7 +171,7 @@ const Operatorsetting = () => {
               )}
 
               {rules.map((rule, index) => (
-                <tr key={index}>
+                <tr key={rule.id}>
                   <td>{index + 1}</td>
 
                   <td>
@@ -127,9 +183,7 @@ const Operatorsetting = () => {
                           updateRule(index, "minAmount", e.target.value)
                         }
                       />
-                    ) : (
-                      `₹${rule.minAmount}`
-                    )}
+                    ) : `₹${rule.minAmount}`}
                   </td>
 
                   <td>
@@ -141,23 +195,19 @@ const Operatorsetting = () => {
                           updateRule(index, "maxAmount", e.target.value)
                         }
                       />
-                    ) : (
-                      `₹${rule.maxAmount}`
-                    )}
+                    ) : `₹${rule.maxAmount}`}
                   </td>
 
                   <td>
                     {editRowIndex === index ? (
                       <input
                         className="form-control"
-                        value={rule.cashback}
+                        value={rule.cashbackAmount}
                         onChange={(e) =>
-                          updateRule(index, "cashback", e.target.value)
+                          updateRule(index, "cashbackAmount", e.target.value)
                         }
                       />
-                    ) : (
-                      `₹${rule.cashback}`
-                    )}
+                    ) : `₹${rule.cashbackAmount}`}
                   </td>
 
                   <td>
@@ -165,7 +215,7 @@ const Operatorsetting = () => {
                       <button
                         className="btn text-white poppins-semibold"
                         style={{ backgroundColor: "#399C41" }}
-                        onClick={() => setEditRowIndex(null)}
+                        onClick={() => handleUpdate(index)}
                       >
                         Save
                       </button>
@@ -179,7 +229,10 @@ const Operatorsetting = () => {
                         </button>
                         <button
                           className="btn btn-sm text-muted"
-                          onClick={() => handleDelete(index)}
+                          onClick={() => {
+                            setSelected(rule);
+                            setShowDelete(true);
+                          }}
                         >
                           <MdDelete size={18} />
                         </button>
@@ -197,61 +250,131 @@ const Operatorsetting = () => {
       {showModal && (
         <>
           <div className="modal fade show d-block">
-            <div className="modal-dialog modal-dialog-centered modal-lg">
+            <div className="modal-dialog modal-dialog-centered">
               <div className="modal-content">
-                <div className="modal-body p-4">
-                  <h5 className="poppins-bold mb-3">Add Recharge Rule</h5>
-                  <hr />
+
+                {/* Modal Header */}
+                <div
+                  className="modal-header text-white"
+                  style={{ backgroundColor: "#399c41" }}
+                >
+                  <h5 className="poppins-bold mb-0">
+                    Add Recharge Rule
+                  </h5>
+                  <button
+                    type="button"
+                    className="btn-close btn-close-white"
+                    onClick={() => setShowModal(false)}
+                  ></button>
+                </div>
+
+                {/* Modal Body */}
+                <div className="modal-body">
 
                   <div className="row g-3 mb-3">
-                    <div className="col-md-6">
-                      <label className="form-label poppins-regular">Minimum Amount</label>
+                    <div className="col-md-6 poppins-regular">
+                      <label>Minimum Amount</label>
                       <input
-                        className="form-control poppins-regular"
-                        placeholder="₹100"
+                        className="form-control"
+                        placeholder="Enter Amount"
                         value={minAmount}
                         onChange={(e) => setMinAmount(e.target.value)}
                       />
                     </div>
 
-                    <div className="col-md-6">
-                      <label className="form-label poppins-regular">Maximum Amount</label>
+                    <div className="col-md-6 poppins-regular">
+                      <label>Maximum Amount</label>
                       <input
-                        className="form-control poppins-regular"
-                        placeholder="₹200"
+                        className="form-control"
+                        placeholder="Enter Amount"
                         value={maxAmount}
                         onChange={(e) => setMaxAmount(e.target.value)}
                       />
                     </div>
                   </div>
 
-                  <label className="form-label poppins-regular">Cashback</label>
-                  <input
-                    className="form-control mb-4 poppins-regular"
-                    placeholder="₹20"
-                    value={cashback}
-                    onChange={(e) => setCashback(e.target.value)}
-                  />
-
-                  <div className="d-flex justify-content-end gap-2">
-                    <button className="btn btn-secondary poppins-semibold" onClick={closeModal}>
-                      Cancel
-                    </button>
-                    <button
-                      className=" btn px-4 text-white poppins-semibold"
-                      style={{ backgroundColor: "#399C41" }}
-                      onClick={handleAdd}
-                    >
-                      Add
-                    </button>
+                  <div className="poppins-regular">
+                    <label>Cashback</label>
+                    <input
+                      className="form-control"
+                      placeholder="Enter Cashback"
+                      value={cashback}
+                      onChange={(e) => setCashback(e.target.value)}
+                    />
                   </div>
+
                 </div>
+
+                {/* Modal Footer */}
+                <div className="modal-footer">
+                  <button
+                    className="btn btn-secondary poppins-semibold"
+                    onClick={() => setShowModal(false)}
+                  >
+                    Cancel
+                  </button>
+
+                  <button
+                    className="btn text-white poppins-semibold"
+                    style={{ backgroundColor: "#399C41" }}
+                    onClick={handleAdd}
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="modal-backdrop fade show"></div>
+        </>
+      )}
+
+
+      {/* DELETE MODAL */}
+      {showDelete && (
+        <>
+          <div
+            className="modal fade show d-block"
+            style={{ background: "rgba(0, 0, 0, 0.6)" }}
+          >
+            <div className="modal-dialog modal-dialog-centered">
+              <div className="modal-content">
+                <div className="modal-header bg-danger text-white">
+                  <h5 className="poppins-bold">Delete</h5>
+                  <button
+                    className="btn-close"
+                    onClick={() => setShowDelete(false)}
+                  />
+                </div>
+
+                <div className="modal-body poppins-regular">
+                  Are you sure you want to delete?
+                </div>
+
+                <div className="modal-footer">
+                  <button
+                    className="btn btn-secondary poppins-semibold"
+                    onClick={() => setShowDelete(false)}
+                  >
+                    Cancel
+                  </button>
+
+                  <button
+                    className="btn btn-danger poppins-semibold"
+                    onClick={handleDelete}
+                  >
+                    Delete
+                  </button>
+                </div>
+
               </div>
             </div>
           </div>
           <div className="modal-backdrop fade show"></div>
         </>
       )}
+
     </div>
   );
 };
