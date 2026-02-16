@@ -100,3 +100,23 @@
   background-color: #ffffff;
 }
 
+/* Remove hover effect */
+.btn-outline-secondary:hover {
+  background-color: #e9ecef !important;
+  color: #6c757d !important;
+  border-color: #ced4da !important;
+}
+
+/* Active tab style */
+.tab-active {
+  background-color: #399C41 !important;
+  color: white !important;
+  border: none !important;
+}
+
+/* Inactive tab style */
+.tab-inactive {
+  background-color: #f1f1f1 !important;
+  color: #399C41 !important;
+  border: 1px solid #dcdcdc !important;
+}

@@ -195,6 +195,32 @@ supportreplay: builder.mutation({
     body: { message },
   }),
 }),
+supportfaqlist: builder.query({
+  query: () => ({
+    url: `${URL.SUPPORT}/faqs`,
+    method: "GET",
+  }),
+}),
+supportfaqcreate: builder.mutation({
+  query: ({ question, answer }) => ({
+    url: `${URL.SUPPORT}/faq`,
+    method: "POST",
+    body: { question, answer },
+  }),
+}),
+supportfaqupdate: builder.mutation({
+  query: ({ id, question, answer }) => ({
+    url: `${URL.SUPPORT}/faq/${id}`,
+    method: "PUT",
+    body: { question, answer },
+  }),
+}),
+supportfaqdelete: builder.mutation({
+  query: ({ id }) => ({
+    url: `${URL.SUPPORT}/faq/${id}`,
+    method: "DELETE",
+  }),
+}),
       // notification
 
       notificationsend: builder.mutation({
@@ -299,6 +325,10 @@ export const {
   useLazySupportQuery,
   useSupportticketQuery,
   useSupportreplayMutation,
+  useSupportfaqlistQuery,
+  useSupportfaqcreateMutation,
+  useSupportfaqupdateMutation,
+  useSupportfaqdeleteMutation,
   // notification
   useNotificationsendMutation,
   useNotificationdetailsQuery,
