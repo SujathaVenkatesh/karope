@@ -104,7 +104,7 @@ const handleLogout = () => {
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
 <div className="modal-header text-white" style={{ backgroundColor: "#3c9b3f" }}>
-  <h5 className="modal-title">Confirm Logout</h5>
+  <h5 className="modal-title poppins-semibold">Confirm Logout</h5>
   <button
     type="button"
     className="btn-close btn-close-white"
@@ -113,7 +113,7 @@ const handleLogout = () => {
 </div>
 
 
-            <div className="modal-body">
+            <div className="modal-body poppins-regular">
               Are you sure you want to logout?
             </div>
 
@@ -121,7 +121,7 @@ const handleLogout = () => {
               {/* Cancel */}
               <button
                 type="button"
-                className="btn btn-secondary"
+                className="btn btn-secondary poppins-semibold"
                 data-bs-dismiss="modal"
               >
                 Cancel
@@ -130,7 +130,7 @@ const handleLogout = () => {
               {/* Confirm Logout */}
 <button
   type="button"
-  className="btn"
+  className="btn poppins-semibold"
   style={{ backgroundColor: "#3c9b3f", color: "#fff" }}
   data-bs-dismiss="modal"
   onClick={handleLogout}

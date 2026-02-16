@@ -1,6 +1,6 @@
 
-export const BASE_URL = 'http://localhost:3000/api/';
-// export const BASE_URL = 'https://karope-backend.onrender.com/api/';
+// export const BASE_URL = 'http://localhost:3000/api/';
+export const BASE_URL = 'https://karope-backend.onrender.com/api/';
 
 export const URL = {
   LOGIN: 'admin/login', 

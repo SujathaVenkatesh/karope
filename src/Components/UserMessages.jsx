@@ -41,7 +41,7 @@ const users = [
   },
 ];
 
-export default function SupportUser() {
+const SupportUser = () => {
   const navigate = useNavigate(); // ✅
 
   return (
@@ -121,3 +121,4 @@ export default function SupportUser() {
     </div>
   );
 }
+export default SupportUser;

@@ -5,10 +5,14 @@ import {
   useLazySupportQuery,
   useSupportticketQuery,
   useSupportreplayMutation,
-} from "../Redux/Api/Api";
-import { data } from "react-router-dom";
+  useSupportfaqlistQuery,
+  useSupportfaqcreateMutation,
+  useSupportfaqupdateMutation,
+  useSupportfaqdeleteMutation,
 
-export default function Support() {
+} from "../Redux/Api/Api";
+
+const Support = () => {
   /* ================= TAB STATE ================= */
   const [activeTab, setActiveTab] = useState("frequent");
 
@@ -110,61 +114,82 @@ const getStatusColor = (status) => {
 
 
   /* ================= FREQUENT QUERIES ================= */
-  const [queries, setQueries] = useState([
-    { id: 1, title: "Facing issue with recent recharge", category: "Technical", status: "Published" },
-    { id: 2, title: "My mobile recharge failed. What should I do?", category: "Technical", status: "Published" },
-    { id: 3, title: "How to change Mobile number?", category: "Account", status: "Published" },
-    { id: 4, title: "Money was deducted but recharge is not successful. Why?", category: "Technical", status: "Published" },
-  ]);
 
-  const [showAdd, setShowAdd] = useState(false);
-  const [showEdit, setShowEdit] = useState(false);
-  const [showDelete, setShowDelete] = useState(false);
-  const [currentId, setCurrentId] = useState(null);
-  const [title, setTitle] = useState("");
-  const [category, setCategory] = useState("Technical");
+/* ================= API ================= */
+const {
+  data: queries,
+  refetch,
+} = useSupportfaqlistQuery();
 
-  const handleAdd = () => {
-    if (!title) return alert("Enter Query Title");
+const [createFaq] = useSupportfaqcreateMutation();
+const [updateFaq] = useSupportfaqupdateMutation();
+const [deleteFaq] = useSupportfaqdeleteMutation();
 
-    const newQuery = {
-      id: Date.now(),
-      title,
-      category,
-      status: "Published",
-    };
+const [showAdd, setShowAdd] = useState(false);
+const [showEdit, setShowEdit] = useState(false);
+const [showDelete, setShowDelete] = useState(false);
 
-    setQueries([...queries, newQuery]);
+const [currentId, setCurrentId] = useState(null);
+const [title, setTitle] = useState("");
+const [category, setCategory] = useState("Technical");
+
+const handleAdd = async () => {
+  if (!title) return alert("Enter Query Title");
+
+  try {
+    await createFaq({
+      question: title,
+      answer: category,
+    }).unwrap();
+
     setTitle("");
     setCategory("Technical");
     setShowAdd(false);
-  };
+    refetch();
+  } catch (err) {
+    console.error(err);
+  }
+};
 
-  const openEdit = (item) => {
-    setCurrentId(item.id);
-    setTitle(item.title);
-    setCategory(item.category);
-    setShowEdit(true);
-  };
+const openEdit = (item) => {
+  setCurrentId(item.id);
+  setTitle(item.question);
+  setCategory(item.category || "Technical");
+  setShowEdit(true);
+};
 
-  const handleEdit = () => {
-    setQueries(
-      queries.map((q) =>
-        q.id === currentId ? { ...q, title, category } : q
-      )
-    );
+const handleEdit = async () => {
+  try {
+    await updateFaq({
+      id: currentId,
+      question: title,
+      answer: category,
+    }).unwrap();
+
     setShowEdit(false);
-  };
+    setCurrentId(null);
+    refetch();
+  } catch (err) {
+    console.error(err);
+  }
+};
 
-  const openDelete = (id) => {
-    setCurrentId(id);
-    setShowDelete(true);
-  };
+const openDelete = (id) => {
+  setCurrentId(id);
+  setShowDelete(true);
+};
 
-  const handleDelete = () => {
-    setQueries(queries.filter((q) => q.id !== currentId));
+const handleDelete = async () => {
+  try {
+    await deleteFaq({ id: currentId }).unwrap();
+
     setShowDelete(false);
-  };
+    setCurrentId(null);
+    refetch();
+  } catch (err) {
+    console.error(err);
+  }
+};
 
   
   return (
@@ -197,37 +222,24 @@ const getStatusColor = (status) => {
       {/* ================= TABS ================= */}
       <div className="card shadow-sm rounded-4 p-3 mb-4">
         <div className="d-flex justify-content-center gap-3">
-          <button
-            className={`btn px-4 poppins-semibold ${
-              activeTab === "frequent"
-                ? "text-white"
-                : "btn-outline-secondary"
-            }`}
-            style={
-              activeTab === "frequent"
-                ? { backgroundColor: "#399C41" }
-                : {}
-            }
-            onClick={() => setActiveTab("frequent")}
-          >
-            Frequent Queries
-          </button>
+<button
+  className={`btn px-4 poppins-semibold ${
+    activeTab === "frequent" ? "tab-active" : "tab-inactive"
+  }`}
+  onClick={() => setActiveTab("frequent")}
+>
+  Frequent Queries
+</button>
 
-          <button
-            className={`btn px-4 poppins-semibold ${
-              activeTab === "messages"
-                ? "text-white"
-                : "btn-outline-secondary"
-            }`}
-            style={
-              activeTab === "messages"
-                ? { backgroundColor: "#399C41" }
-                : {}
-            }
-            onClick={() => setActiveTab("messages")}
-          >
-            User Messages
-          </button>
+<button
+  className={`btn px-4 poppins-semibold ${
+    activeTab === "messages" ? "tab-active" : "tab-inactive"
+  }`}
+  onClick={() => setActiveTab("messages")}
+>
+  User Messages
+</button>
+
         </div>
       </div>
 
@@ -240,18 +252,14 @@ const getStatusColor = (status) => {
                 <tr>
                   <th>S.no</th>
                   <th>Query Title</th>
-                  <th>Category</th>
-                  <th>Status</th>
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
-                {queries.map((q, index) => (
+                {queries?.map((q, index) => (
                   <tr key={q.id}>
                     <td>{index + 1}</td>
-                    <td>{q.title}</td>
-                    <td>{q.category}</td>
-                    <td>{q.status}</td>
+<td>{q.question}</td>
                     <td>
                       <MdEdit
                         className="text-muted me-3"
@@ -280,7 +288,7 @@ const getStatusColor = (status) => {
 
       <div className="mb-3">
         <select
-          className="form-select w-auto"
+          className="form-select w-auto form-control"
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
         >
@@ -560,17 +568,6 @@ const getStatusColor = (status) => {
           />
         </div>
 
-        <div className="mb-3 poppins-regular">
-          <label className="form-label">Category</label>
-          <select
-            className="form-select"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-          >
-            <option value="Technical">Technical</option>
-            <option value="Account">Account</option>
-          </select>
-        </div>
       </div>
 
       <div className="modal-footer justify-content-end">
@@ -637,3 +634,4 @@ const getStatusColor = (status) => {
     </div>
   );
 }
+export default Support;
