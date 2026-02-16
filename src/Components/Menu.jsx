@@ -199,55 +199,62 @@ const Menu = () => {
                     <div className="row g-3">
                         <h4 className="poppins-bold text-color ">Menu</h4>
 
-                        {menus.map(m => (
-                            <div key={m.id} className="col-xl-2 col-md-3 col-sm-4">
-                                <div
-                                    className="card text-center h-100"
-                                    style={{ background: "#eaf6ea", border: "1px solid #399c41" }}
-                                >
-                                    <div className="card-body">
+{menus.length > 0 ? (
+  menus.map(m => (
+    <div key={m.id} className="col-xl-2 col-md-3 col-sm-4">
+      <div
+        className="card text-center h-100"
+        style={{ background: "#eaf6ea", border: "1px solid #399c41" }}
+      >
+        <div className="card-body">
 
-                                        <div className="d-flex justify-content-between">
-                                            <MdDelete
-                                                onClick={() => { setSelected(m); setShowDelete(true); }}
-                                            />
-                                            <MdEdit
-                                                onClick={() => {
-                                                    setEditId(m.id);
-                                                    setMenuName(m.name);
-                                                    setStatus(m.active);
-                                                    setMenuIcon(null);
-                                                    setShowEdit(true);
-                                                }}
-                                            />
-                                        </div>
+          <div className="d-flex justify-content-between">
+            <MdDelete
+              onClick={() => { setSelected(m); setShowDelete(true); }}
+            />
+            <MdEdit
+              onClick={() => {
+                setEditId(m.id);
+                setMenuName(m.name);
+                setStatus(m.active);
+                setMenuIcon(null);
+                setShowEdit(true);
+              }}
+            />
+          </div>
 
-                                        <div className="my-2">
-                                            {m.icon
-                                                ? <img src={m.icon} width="22" alt={m.name} />
-                                                : defaultIcons[m.name] || <FaThLarge />}
-                                        </div>
+          <div className="my-2">
+            {m.icon
+              ? <img src={m.icon} width="22" alt={m.name} />
+              : defaultIcons[m.name] || <FaThLarge />}
+          </div>
 
-                                        <b className="poppins-semibold">{m.name}</b>
+          <b className="poppins-semibold">{m.name}</b>
 
-                                        {/* TOGGLE */}
-                                        <div className="form-check form-switch d-flex justify-content-center mt-2">
-                                            <input
-                                                className="form-check-input"
-                                                type="checkbox"
-                                                checked={m.active}
-                                                onChange={() => toggle(m)}
+          <div className="form-check form-switch d-flex justify-content-center mt-2">
+            <input
+              className="form-check-input"
+              type="checkbox"
+              checked={m.active}
+              onChange={() => toggle(m)}
+              style={{
+                backgroundColor: m.active ? "#399c41" : "#ccc"
+              }}
+            />
+          </div>
 
-                                                style={{
-                                                    backgroundColor: m.active ? "#399c41" : "#ccc"
-                                                }}
-                                            />
-                                        </div>
+        </div>
+      </div>
+    </div>
+  ))
+) : (
+  <div className="col-12 text-center py-5">
+    <h6 className="text-muted poppins-semibold">
+      No Menu Found
+    </h6>
+  </div>
+)}
 
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
                     </div>
 
                     {/* EDIT MODAL */}
